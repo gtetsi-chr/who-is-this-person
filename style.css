@@ -67,6 +67,8 @@ body.light-mode {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    overflow: hidden; /* Το sidebar μένει σταθερό */
 }
 
 .timeline {
@@ -74,6 +76,8 @@ body.light-mode {
     overflow-y: auto;
     padding: 20px 0;
     flex-grow: 1;
+    overflow-y: auto; /* Μόνο η λίστα μέσα του σκρολάρει */
+    max-height: calc(100vh - 100px); /* Δίνουμε χώρο για τον τίτλο */
 }
 
 .timeline::before {
