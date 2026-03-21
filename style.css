@@ -345,3 +345,27 @@ body.dark-force {
     border-radius: 8px;
     background: white; /* Η Wikipedia είναι λευκή, οπότε βοηθάει στην αντίθεση */
 }
+
+#wiki-body {
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #ddd;
+}
+
+/* Στυλ για τις εικόνες και τους πίνακες που μπορεί να φέρει η Wiki */
+#wiki-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+#wiki-body a {
+    color: #4facfe;
+    text-decoration: none;
+}
+
+/* Κρύβουμε κάποια άχρηστα στοιχεία που φέρνει το API */
+.mw-editsection, .ambox, .navbox {
+    display: none !important;
+}
