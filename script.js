@@ -73,7 +73,9 @@ async function askAI(name) {
         });
         
         const data = await response.json();
-        aiBox.innerText = data.text;
+        // Μετατρέπει τα **κείμενο** σε <b>κείμενο</b> για να φαίνονται έντονα
+        let formattedText = data.text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        aiBox.innerHTML = formattedText;
 
     } catch (err) {
         // ΚΡΥΦΟ ΣΦΑΛΜΑ ΓΙΑ ΤΟΝ ΧΡΗΣΤΗ - ΦΑΝΕΡΟ ΣΤΟ F12
