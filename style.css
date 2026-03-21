@@ -193,10 +193,10 @@ body.light-mode {
     overflow-y: auto; 
     
     /* 3. Απόσταση από το κάτω μέρος της οθόνης */
-    margin-bottom: 30px; 
+    margin-bottom: 5px; 
     
     /* 4. Εμφάνιση (Padding και Στυλ) */
-    padding: 20px;
+    padding: 10px;
     background: rgba(0, 0, 0, 0.25);
     border-radius: 12px;
     border-left: 4px solid #4facfe;
@@ -290,7 +290,7 @@ body.dark-force {
     display: flex;
     flex-direction: column;
     overflow: hidden; /* Κλειδώνει την κάρτα */
-    margin-bottom: 20px; /* Απόσταση από το τέλος της οθόνης */
+    margin-bottom: 10px; /* Απόσταση από το τέλος της οθόνης */
 }
 
 /* ΤΟ ΕΣΩΤΕΡΙΚΟ ΤΗΣ AI (Εκεί που μπαίνει το κείμενο) */
