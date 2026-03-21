@@ -3,144 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Χρονολόγιο Προσωπικοτήτων</title>
-    
+    <title>AI Timeline Project</title>
     <style>
+        /* Μηδενισμός και Βασικά */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f7f6;
+            height: 100vh;
+            display: flex; /* Χρησιμοποιούμε flex για σίγουρο διαχωρισμό */
+        }
 
-/* Μηδενίζουμε περιθώρια για να πιάνει όλη την οθόνη */
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    height: 100vh; /* Ύψος όλη την οθόνη */
-    overflow: hidden; /* Δεν θέλουμε όλη η σελίδα να σκρολάρει, μόνο τα πλαίσια */
-}
+        /* Η διάταξη: Αριστερά (Timeline) και Δεξιά (Περιεχόμενο) */
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
 
-/* 1. ΤΟ ΚΥΡΙΟ CONTAINER (GRID) */
-.app-container {
-    display: grid;
-    grid-template-columns: 280px 1fr; /* Αριστερή στήλη 280px, δεξιά το υπόλοιπο (1fr) */
-    height: 100vh;
-}
+        /* ΑΡΙΣΤΕΡΗ ΣΤΗΛΗ */
+        .sidebar {
+            width: 300px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid #1a252f;
+        }
 
-/* Η στήλη αριστερά */
-.sidebar {
-    background-color: white;
-    border-right: 1px solid #ddd;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
+        .sidebar h2 {
+            font-size: 1.2rem;
+            text-align: center;
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+        }
 
-.sidebar h2 { text-align: center; color: #333; }
+        /* TIMELINE STYLE */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+            margin-top: 20px;
+        }
 
-/* 2. Η ΚΑΘΕΤΗ ΓΡΑΜΜΗ ΤΟΥ TIMELINE */
-.timeline {
-    position: relative;
-    padding: 10px 0;
-    overflow-y: auto; /* Σκρολάρει μόνο η λίστα */
-    flex-grow: 1;
-}
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #3498db;
+        }
 
-/* Η γκρίζα γραμμή */
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 20px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: #e0e0e0;
-}
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            cursor: pointer;
+            padding-left: 20px;
+        }
 
-/* Το κάθε στοιχείο στη λίστα */
-.timeline-item {
-    position: relative;
-    padding-left: 50px;
-    margin-bottom: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #3498db;
+            border-radius: 50%;
+            border: 2px solid #2c3e50;
+        }
 
-/* Η τελεία πάνω στη γραμμή */
-.timeline-item::before {
-    content: '';
-    position: absolute;
-    left: 12px;
-    top: 3px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: white;
-    border: 3px solid #007bff; /* Μπλε τελεία */
-    z-index: 1;
-}
+        .timeline-item:hover .name { color: #3498db; }
+        .timeline-item .year { display: block; font-size: 0.8rem; color: #bdc3c7; }
+        .timeline-item .name { font-weight: bold; }
 
-/* Εφέ όταν περνάς το ποντίκι */
-.timeline-item:hover { transform: translateX(5px); }
-.timeline-item:hover .name { color: #007bff; }
+        /* ΔΕΞΙΑ ΣΤΗΛΗ (ΠΕΡΙΕΧΟΜΕΝΟ) */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-/* Όταν ένα στοιχείο είναι επιλεγμένο */
-.timeline-item.active .name { font-weight: bold; color: #007bff; }
-.timeline-item.active::before { background: #007bff; } /* Γεμάτη μπλε τελεία */
+        /* ΤΑ ΠΛΑΙΣΙΑ (CARDS) */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
 
-/* Το έτος και το όνομα */
-.timeline-item .year { display: block; font-size: 0.85em; color: #888; }
-.timeline-item .name { display: block; font-size: 1.1em; color: #333; }
+        .card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
 
-/* 3. Η ΔΕΞΙΑ ΣΤΗΛΗ (main-content) */
-.main-content {
-    padding: 30px;
-    display: flex;
-    flex-direction: column; /* Στοιβάζει τα πλαίσια κάθετα */
-    gap: 20px; /* Απόσταση μεταξύ των πλαισίων */
-    overflow-y: auto; /* Σκρολάρει αν δεν χωράνε τα πλαίσια */
-}
+        /* ΤΑ 13 ΚΕΙΜΕΝΑ ΣΕ ΠΛΕΓΜΑ */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
 
-/* Στυλ για τα πλαίσια (cards) */
-.meta-box, .ai-box {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
+        .meta-item {
+            font-size: 0.9rem;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #3498db;
+        }
 
-.meta-box h3, .ai-box h3 { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; color: #333; }
-
-/* 4. ΤΟ ΠΛΕΓΜΑ ΓΙΑ ΤΑ 13 ΚΕΙΜΕΝΑ (META GRID) */
-.meta-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 ίσες στήλες */
-    gap: 15px;
-}
-
-.meta-grid p { margin: 0; font-size: 0.95em; color: #555; }
-.meta-grid strong { color: #333; }
-
-/* 5. ΤΟ ΠΛΑΙΣΙΟ ΤΗΣ AI */
-#aiResult {
-    font-size: 1.05em;
-    line-height: 1.6;
-    color: #444;
-    min-height: 150px;
-    font-style: italic; /* Εφέ για να ξεχωρίζει η AI */
-}
-
-        
-
-
-        
+        /* AI BOX */
+        #aiResult {
+            line-height: 1.6;
+            color: #333;
+            white-space: pre-line; /* Για να κρατάει τις παραγράφους */
+        }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-
         <aside class="sidebar">
             <h2>Χρονολόγιο</h2>
             <div class="timeline">
-                <div class="timeline-item active" onclick="loadPerson('Σωκράτης')">
+                <div class="timeline-item" onclick="loadPerson('Σωκράτης')">
                     <span class="year">469 π.Χ.</span>
                     <span class="name">Σωκράτης</span>
                 </div>
@@ -152,46 +145,58 @@ body {
                     <span class="year">100 π.Χ.</span>
                     <span class="name">Ιούλιος Καίσαρας</span>
                 </div>
-                </div>
+            </div>
         </aside>
 
         <main class="main-content">
-
-            <section class="meta-box" id="metaBox">
-                <h3>Βασικές Πληροφορίες: <span id="currentNameTitle">Επίλεξε Πρόσωπο</span></h3>
+            <section class="card">
+                <h3>Βασικά Δεδομένα: <span id="currentNameTitle">-</span></h3>
                 <div class="meta-grid">
-                    <p><strong>Δεδομένο 1:</strong> <span id="data1">-</span></p>
-                    <p><strong>Δεδομένο 2:</strong> <span id="data2">-</span></p>
-                    <p><strong>Δεδομένο 3:</strong> <span id="data3">-</span></p>
-                    <p><strong>Δεδομένο 4:</strong> <span id="data4">-</span></p>
-                    <p><strong>Δεδομένο 5:</strong> <span id="data5">-</span></p>
-                    <p><strong>Δεδομένο 6:</strong> <span id="data6">-</span></p>
-                    <p><strong>Δεδομένο 7:</strong> <span id="data7">-</span></p>
-                    <p><strong>Δεδομένο 8:</strong> <span id="data8">-</span></p>
-                    <p><strong>Δεδομένο 9:</strong> <span id="data9">-</span></p>
-                    <p><strong>Δεδομένο 10:</strong> <span id="data10">-</span></p>
-                    <p><strong>Δεδομένο 11:</strong> <span id="data11">-</span></p>
-                    <p><strong>Δεδομένο 12:</strong> <span id="data12">-</span></p>
-                    <p><strong>Δεδομένο 13:</strong> <span id="data13">-</span></p>
+                    <div class="meta-item"><strong>Δεδομένο 1:</strong> <span id="data1">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 2:</strong> <span id="data2">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 3:</strong> <span id="data3">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 4:</strong> <span id="data4">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 5:</strong> <span id="data5">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 6:</strong> <span id="data6">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 7:</strong> <span id="data7">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 8:</strong> <span id="data8">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 9:</strong> <span id="data9">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 10:</strong> <span id="data10">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 11:</strong> <span id="data11">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 12:</strong> <span id="data12">-</span></div>
+                    <div class="meta-item"><strong>Δεδομένο 13:</strong> <span id="data13">-</span></div>
                 </div>
             </section>
 
-            <section class="ai-box">
-                <h3>Αναλυτικό Βιογραφικό (AI)</h3>
-                <div id="aiResult">Η απάντηση της AI θα εμφανιστεί εδώ...</div>
+            <section class="card">
+                <h3>Βιογραφικό από AI</h3>
+                <div id="aiResult">Επίλεξε ένα πρόσωπο από το χρονολόγιο αριστερά.</div>
             </section>
-
         </main>
-
     </div>
 
     <script>
-        // ΠΡΟΣΩΡΙΝΗ ΣΥΝΑΡΤΗΣΗ ΓΙΑ ΝΑ ΔΟΥΜΕ ΤΟ CSS
-        function loadPerson(name) {
+        async function loadPerson(name) {
             document.getElementById('currentNameTitle').innerText = name;
-            document.getElementById('aiResult').innerText = "Σκέφτομαι για τον " + name + "... (Εδώ θα καλείται ο Worker στο Βήμα 3)";
+            const aiBox = document.getElementById('aiResult');
+            aiBox.innerHTML = "<em>Περιμένετε, η AI επεξεργάζεται το αίτημα για τον " + name + "...</em>";
+
+            try {
+                // ΕΔΩ ΒΑΖΕΙΣ ΤΟ URL ΤΟΥ WORKER ΣΟΥ
+                const workerUrl = 'https://person-lookup-api.gtetsi.workers.dev/'; 
+                
+                const response = await fetch(workerUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name })
+                });
+
+                const data = await response.json();
+                aiBox.innerText = data.text;
+            } catch (error) {
+                aiBox.innerText = "Σφάλμα κατά τη σύνδεση με την AI.";
+            }
         }
     </script>
-
 </body>
 </html>
