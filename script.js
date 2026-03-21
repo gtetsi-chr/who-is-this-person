@@ -58,6 +58,11 @@ async function selectPerson(element, person) {
     }
 
     askAI(person.name);
+
+    // Ενημέρωση Wikipedia Iframe
+    const wikiUrl = `https://el.m.wikipedia.org/wiki/${person.name.replace(/ /g, '_')}`;
+    document.getElementById('wikiFrame').src = wikiUrl;
+    fetchWikipedia(person.name); // Τραβάει το κείμενο από τη Wiki
 }
 
 async function askAI(name) {
@@ -97,14 +102,7 @@ function showTab(tabName) {
     event.currentTarget.classList.add('active');
 }
 
-// Μέσα στη συνάρτηση selectPerson(element, person), πρόσθεσε αυτή τη γραμμή στο τέλος:
-function selectPerson(element, person) {
-    // ... ο παλιός σου κώδικας ...
-    
-    // Ενημέρωση Wikipedia Iframe
-    const wikiUrl = `https://el.m.wikipedia.org/wiki/${person.name.replace(/ /g, '_')}`;
-    document.getElementById('wikiFrame').src = wikiUrl;
-}
+
 
 
 function toggleTheme() {
