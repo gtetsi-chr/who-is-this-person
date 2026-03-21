@@ -1,12 +1,12 @@
-/* 1. ΜΕΤΑΒΛΗΤΕΣ ΧΡΩΜΑΤΩΝ */
+/* 1. ΜΕΤΑΒΛΗΤΕΣ ΧΡΩΜΑΤΩΝ - ΤΩΡΑ ΤΟ DARK ΕΙΝΑΙ ΤΟ ΠΡΟΚΑΘΟΡΙΣΜΕΝΟ */
 :root {
-    --bg-color: #ffffff;
-    --sidebar-bg: #f8f9fa;
-    --text-color: #333333;
-    --border-color: #dddddd;
-    --accent-color: #007bff;
-    --box-bg: #ffffff;
-    --timeline-line: #e0e0e0;
+    --bg-color: #121212;
+    --sidebar-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --border-color: #333333;
+    --accent-color: #3792ff;
+    --box-bg: #1e1e1e;
+    --timeline-line: #444444;
 }
 
 /* ΣΚΟΥΡΟΧΡΩΜΗ ΕΜΦΑΝΙΣΗ (Dark Mode) */
@@ -42,6 +42,16 @@ body.dark-mode {
     --accent-color: #3792ff;
     --box-bg: #1e1e1e;
     --timeline-line: #444444;
+}
+/* 2. ΑΝ Ο ΧΡΗΣΤΗΣ ΕΠΙΛΕΞΕΙ LIGHT MODE (μέσω της κλάσης .light-mode) */
+body.light-mode {
+    --bg-color: #ffffff;
+    --sidebar-bg: #f8f9fa;
+    --text-color: #333333;
+    --border-color: #dddddd;
+    --accent-color: #007bff;
+    --box-bg: #ffffff;
+    --timeline-line: #e0e0e0;
 }
 
 .app-container {
@@ -148,5 +158,16 @@ body.dark-force {
 /* ΔΙΟΡΘΩΣΗ ΓΙΑ ΤΟ ΚΥΚΛΑΚΙ: Όταν το item έχει την κλάση .active, το κυκλάκι γεμίζει */
 .timeline-item.active::before {
     background-color: var(--accent-color) !important;
-    box-shadow: 0 0 8px var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+}
+
+.timeline-item .name {
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+
+.timeline-item.active .name {
+    color: var(--accent-color);
+    font-weight: bold;
 }
