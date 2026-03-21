@@ -1,4 +1,4 @@
-/* 1. ΜΕΤΑΒΛΗΤΕΣ ΧΡΩΜΑΤΩΝ (Για εύκολη αλλαγή) */
+/* 1. ΜΕΤΑΒΛΗΤΕΣ ΧΡΩΜΑΤΩΝ */
 :root {
     --bg-color: #ffffff;
     --sidebar-bg: #f8f9fa;
@@ -31,6 +31,17 @@ body {
     height: 100vh;
     overflow: hidden;
     transition: background 0.3s, color 0.3s;
+}
+
+/* ΑΥΤΟ ΕΔΩ ΕΙΝΑΙ ΓΙΑ ΤΟ ΚΟΥΜΠΙ: Αν η κλάση .dark-mode μπει στο body, άλλαξε τα χρώματα */
+body.dark-mode {
+    --bg-color: #121212;
+    --sidebar-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --border-color: #333333;
+    --accent-color: #3792ff;
+    --box-bg: #1e1e1e;
+    --timeline-line: #444444;
 }
 
 .app-container {
@@ -132,4 +143,10 @@ body.dark-force {
     --accent-color: #3792ff;
     --box-bg: #1e1e1e;
     --timeline-line: #444444;
+}
+
+/* ΔΙΟΡΘΩΣΗ ΓΙΑ ΤΟ ΚΥΚΛΑΚΙ: Όταν το item έχει την κλάση .active, το κυκλάκι γεμίζει */
+.timeline-item.active::before {
+    background-color: var(--accent-color) !important;
+    box-shadow: 0 0 8px var(--accent-color);
 }
