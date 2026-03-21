@@ -5,19 +5,15 @@ window.onload = async () => {
         const response = await fetch('data.csv');
         const text = await response.text();
         
-        // ΑΥΤΟΜΑΤΟΣ ΕΝΤΟΠΙΣΜΟΣ ΔΙΑΧΩΡΙΣΤΙΚΟΥ (; ή ,)
         const delimiter = text.includes(';') ? ';' : ',';
-        console.log("Detected delimiter:", delimiter);
-
         const rows = text.split('\n').filter(row => row.trim() !== '');
         
         database = rows.slice(1).map(row => {
-            const cols = row.split(delimiter); // Χρησιμοποιεί αυτό που βρήκε
-            
+            const cols = row.split(delimiter);
             return {
                 id: cols[0]?.trim(),
                 name: cols[1]?.trim(),
-                birth: cols[2]?.trim(),
+                birth: cols[2]?.trim(), // Εδώ είναι η χρονιά (π.χ. 2024 ή -500)
                 death: cols[3]?.trim(),
                 origin: cols[4]?.trim(),
                 category: cols[5]?.trim(),
@@ -33,9 +29,16 @@ window.onload = async () => {
             };
         }).filter(item => item.name);
 
+        // ΤΑΞΙΝΟΜΗΣΗ: Από το Σήμερα (Μεγάλο νούμερο) στο Παρελθόν (Μικρό νούμερο)
+        database.sort((a, b) => {
+            let yearA = parseInt(a.birth) || 0;
+            let yearB = parseInt(b.birth) || 0;
+            return yearB - yearA; // Φθίνουσα σειρά
+        });
+
         renderTimeline();
     } catch (err) {
-        console.error("Σφάλμα φόρτωσης:", err);
+        console.error("Σφάλμα:", err);
     }
 };
 
