@@ -3,27 +3,38 @@ let database = [];
 window.onload = async () => {
     try {
         const response = await fetch('data.csv');
-        const buffer = await response.arrayBuffer();
-        const decoder = new TextDecoder('utf-8'); // Εδώ διορθώνουμε τα ελληνικά
-        const data = decoder.decode(buffer);
+        const data = await response.text();
         
         // Χωρίζουμε τις γραμμές
-        const rows = data.split(/\r?\n/).filter(row => row.trim() !== "");
+        const rows = data.split('\n').filter(row => row.trim() !== ''); 
         
-        // Παίρνουμε τα δεδομένα - Προσοχή: Χρησιμοποιούμε το ερωτηματικό (;) ως διαχωριστικό
+        // Παίρνουμε τα δεδομένα μετά την κεφαλίδα (ξεκινάμε από το 1)
         database = rows.slice(1).map(row => {
+            // ΕΔΩ ΕΙΝΑΙ Η ΑΛΛΑΓΗ: Χρησιμοποιούμε το ερωτηματικό ;
             const cols = row.split(';'); 
+            
             return {
-                id: cols[0], name: cols[1], birth: cols[2], death: cols[3],
-                origin: cols[4], cat: cols[5], era: cols[6], school: cols[7],
-                rank: cols[8], bio: cols[9], contr: cols[10], works: cols[11],
-                rel: cols[12], personB: cols[13], quote: cols[14]
+                id: cols[0]?.trim(),
+                name: cols[1]?.trim(),
+                birth: cols[2]?.trim(),
+                death: cols[3]?.trim(),
+                origin: cols[4]?.trim(),
+                category: cols[5]?.trim(),
+                era: cols[6]?.trim(),
+                school: cols[7]?.trim(),
+                rank: cols[8]?.trim(),
+                bio: cols[9]?.trim(),
+                contribution: cols[10]?.trim(),
+                works: cols[11]?.trim(),
+                relType: cols[12]?.trim(),
+                personB: cols[13]?.trim(),
+                quote: cols[14]?.trim()
             };
-        });
+        }).filter(item => item.name); // Κρατάμε μόνο όσα έχουν όνομα
 
         renderTimeline();
     } catch (err) {
-        console.error("Σφάλμα:", err);
+        console.error("Σφάλμα φόρτωσης CSV:", err);
     }
 };
 
