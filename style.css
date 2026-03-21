@@ -77,7 +77,8 @@ body.light-mode {
     padding: 20px 0;
     flex-grow: 1;
     overflow-y: auto; /* Μόνο η λίστα μέσα του σκρολάρει */
-    max-height: calc(100vh - 100px); /* Δίνουμε χώρο για τον τίτλο */
+    max-height: calc(100vh - 120px); /* Ρύθμισέ το ανάλογα με το ύψος του τίτλου σου */
+    padding-right: 10px;
 }
 
 .timeline::before {
