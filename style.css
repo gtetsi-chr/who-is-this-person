@@ -33,6 +33,11 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 
+h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
 /* ΑΥΤΟ ΕΔΩ ΕΙΝΑΙ ΓΙΑ ΤΟ ΚΟΥΜΠΙ: Αν η κλάση .dark-mode μπει στο body, άλλαξε τα χρώματα */
 body.dark-mode {
     --bg-color: #121212;
