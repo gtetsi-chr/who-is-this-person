@@ -13,18 +13,18 @@
 
     <div class="app-container">
         <aside class="sidebar">
-            <button onclick="document.body.classList.toggle('dark-force')">🌓 Αλλαγή Θέματος</button>
+            <button onclick="toggleDarkMode()">🌓 Αλλαγή Θέματος</button>
             <h2>Χρονολόγιο</h2>
             <div class="timeline">
-                <div class="timeline-item" onclick="loadPerson('Σωκράτης')">
+                <div class="timeline-item" onclick="loadPerson(this, 'Σωκράτης')">
                     <span class="year">469 π.Χ.</span>
                     <span class="name">Σωκράτης</span>
                 </div>
-                <div class="timeline-item" onclick="loadPerson('Μέγας Αλέξανδρος')">
+                <div class="timeline-item" onclick="loadPerson(this, 'Μέγας Αλέξανδρος')">
                     <span class="year">356 π.Χ.</span>
                     <span class="name">Μέγας Αλέξανδρος</span>
                 </div>
-                <div class="timeline-item" onclick="loadPerson('Ιούλιος Καίσαρας')">
+                <div class="timeline-item" onclick="loadPerson(this, 'Ιούλιος Καίσαρας')">
                     <span class="year">100 π.Χ.</span>
                     <span class="name">Ιούλιος Καίσαρας</span>
                 </div>
@@ -80,6 +80,46 @@
                 aiBox.innerText = "Σφάλμα κατά τη σύνδεση με την AI.";
             }
         }
+
+        // 1. ΛΕΙΤΟΥΡΓΙΑ ΓΙΑ ΤΟ DARK MODE ΚΟΥΜΠΙ
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
+
+// 2. ΛΕΙΤΟΥΡΓΙΑ ΓΙΑ ΤΗΝ ΕΠΙΛΟΓΗ ΠΡΟΣΩΠΟΥ
+async function loadPerson(element, name) {
+    // Αφαίρεσε την κλάση 'active' από όλα τα προηγούμενα ονόματα
+    const allItems = document.querySelectorAll('.timeline-item');
+    allItems.forEach(item => item.classList.remove('active'));
+
+    // Πρόσθεσε την κλάση 'active' σε αυτό που πατήσαμε (για να γεμίσει το κυκλάκι)
+    element.classList.add('active');
+
+    // Ενημέρωσε τους τίτλους στη σελίδα
+    document.getElementById('currentNameTitle').innerText = name;
+    
+    // Εδώ καλούμε την AI (Χρησιμοποιούμε τον Worker που φτιάξαμε πριν)
+    askAI(name);
+}
+
+// 3. Η ΣΥΝΑΡΤΗΣΗ ΠΟΥ ΜΙΛΑΕΙ ΜΕ ΤΟΝ WORKER (Αυτή που είχαμε φτιάξει στην αρχή)
+async function askAI(name) {
+    const resultDiv = document.getElementById('aiResult');
+    resultDiv.innerText = "Η AI αναζητά πληροφορίες για τον " + name + "...";
+
+    try {
+        const response = await fetch('https://person-lookup-api.gtetsi.workers.dev/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name })
+        });
+        const data = await response.json();
+        resultDiv.innerText = data.text;
+    } catch (error) {
+        resultDiv.innerText = "Σφάλμα κατά τη σύνδεση με την AI.";
+    }
+}
+        
     </script>
 </body>
 </html>
