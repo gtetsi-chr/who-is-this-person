@@ -1,108 +1,136 @@
 let database = [];
 
+// 1. ΑΥΤΟΜΑΤΗ ΦΟΡΤΩΣΗ ΜΟΛΙΣ ΑΝΟΙΞΕΙ Η ΣΕΛΙΔΑ
 window.onload = async () => {
     try {
-        const response = await fetch('data.csv');
+        // Προσθέτουμε ένα τυχαίο νούμερο στο τέλος για να μην "κολλάει" στο παλιό cache
+        const response = await fetch('data.csv?v=' + Math.random());
         const text = await response.text();
         
+        // Εντοπισμός διαχωριστικού (; ή ,)
         const delimiter = text.includes(';') ? ';' : ',';
-        const rows = text.split('\n').filter(row => row.trim() !== '');
         
+        // Χωρισμός γραμμών και αφαίρεση κενών
+        const rows = text.split('\n').map(r => r.trim()).filter(r => r !== '');
+        
+        // Μετατροπή CSV σε Αντικείμενα
         database = rows.slice(1).map(row => {
             const cols = row.split(delimiter);
             return {
-                id: cols[0]?.trim(),
-                name: cols[1]?.trim(),
-                birth: cols[2]?.trim(), // Εδώ είναι η χρονιά (π.χ. 2024 ή -500)
-                death: cols[3]?.trim(),
-                origin: cols[4]?.trim(),
-                category: cols[5]?.trim(),
-                era: cols[6]?.trim(),
-                school: cols[7]?.trim(),
-                rank: cols[8]?.trim(),
-                bio: cols[9]?.trim(),
-                contribution: cols[10]?.trim(),
-                works: cols[11]?.trim(),
-                relType: cols[12]?.trim(),
-                personB: cols[13]?.trim(),
-                quote: cols[14]?.trim()
+                id: cols[0],
+                name: cols[1],
+                birth: cols[2],
+                death: cols[3],
+                origin: cols[4],
+                category: cols[5],
+                era: cols[6],
+                school: cols[7],
+                rank: cols[8],
+                bio: cols[9],
+                contribution: cols[10],
+                works: cols[11],
+                relType: cols[12],
+                personB: cols[13],
+                quote: cols[14]
             };
-        }).filter(item => item.name);
+        }).filter(item => item.name); // Κρατάμε μόνο όσους έχουν όνομα
 
-        // ΤΑΞΙΝΟΜΗΣΗ: Από το Σήμερα (Μεγάλο νούμερο) στο Παρελθόν (Μικρό νούμερο)
+        // ΤΑΞΙΝΟΜΗΣΗ (Από το σήμερα προς τα πίσω)
         database.sort((a, b) => {
-            let yearA = parseInt(a.birth) || 0;
-            let yearB = parseInt(b.birth) || 0;
-            return yearB - yearA; // Φθίνουσα σειρά
+            return parseYear(b.birth) - parseYear(a.birth);
         });
 
         renderTimeline();
     } catch (err) {
-        console.error("Σφάλμα:", err);
+        console.error("Σφάλμα κατά τη φόρτωση του CSV:", err);
     }
 };
 
+// 2. ΣΥΝΑΡΤΗΣΗ ΠΟΥ ΜΕΤΑΤΡΕΠΕΙ ΤΟ "π.Χ." ΣΕ ΑΡΙΘΜΟ ΓΙΑ ΤΗΝ ΤΑΞΙΝΟΜΗΣΗ
+function parseYear(yearStr) {
+    if (!yearStr) return -99999; // Αν δεν έχει χρονιά, πάει στο τέλος
+    let year = yearStr.toString().toLowerCase().trim();
+    
+    // Αν περιέχει "π" (από το π.Χ. ή πχ), το κάνουμε αρνητικό
+    if (year.includes('π')) {
+        let num = parseInt(year.replace(/[^0-9]/g, ''));
+        return num ? -num : 0;
+    }
+    
+    // Αλλιώς επιστρέφουμε τον αριθμό κανονικά
+    return parseInt(year.replace(/[^0-9]/g, '')) || 0;
+}
+
+// 3. ΕΜΦΑΝΙΣΗ ΤΟΥ ΧΡΟΝΟΛΟΓΙΟΥ ΑΡΙΣΤΕΡΑ
 function renderTimeline() {
     const timeline = document.querySelector('.timeline');
+    if (!timeline) return;
     timeline.innerHTML = '';
 
     database.forEach(person => {
-        if (!person.name) return;
         const item = document.createElement('div');
         item.className = 'timeline-item';
         item.onclick = () => selectPerson(item, person);
         item.innerHTML = `
-            <span class="year">${person.birth || ''}</span>
-            <span class="name">${person.name.replace(/"/g, '')}</span>
+            <div class="year">${person.birth || ''}</div>
+            <div class="name">${person.name}</div>
         `;
         timeline.appendChild(item);
     });
 }
 
+// 4. ΟΤΑΝ ΕΠΙΛΕΓΟΥΜΕ ΕΝΑΝ ΑΝΘΡΩΠΟ
 async function selectPerson(element, person) {
+    // 1. Highlight στο Timeline
     document.querySelectorAll('.timeline-item').forEach(i => i.classList.remove('active'));
     element.classList.add('active');
 
-    // Καθαρισμός των " από τα κείμενα αν υπάρχουν
-    const clean = (txt) => txt ? txt.replace(/"/g, '') : '-';
+    // 2. Ενημέρωση των 13+ πεδίων (HTML IDs: data1 έως data13)
+    document.getElementById('currentNameTitle').innerText = person.name;
+    document.getElementById('data1').innerText = person.birth || '-';
+    document.getElementById('data2').innerText = person.death || '-';
+    document.getElementById('data3').innerText = person.origin || '-';
+    document.getElementById('data4').innerText = person.category || '-';
+    document.getElementById('data5').innerText = person.era || '-';
+    document.getElementById('data6').innerText = person.school || '-';
+    document.getElementById('data7').innerText = person.rank || '-';
+    document.getElementById('data8').innerText = person.bio || '-';
+    document.getElementById('data9').innerText = person.contribution || '-';
+    document.getElementById('data10').innerText = person.works || '-';
+    document.getElementById('data11').innerText = person.relType || '-';
+    document.getElementById('data12').innerText = person.personB || '-';
+    document.getElementById('data13').innerText = person.quote || '-';
 
-    document.getElementById('currentNameTitle').innerText = clean(person.name);
-    
-    // Αντιστοίχιση των 15 πεδίων σου στα 13 πλαίσια
-    document.getElementById('data1').innerHTML = `<strong>Γέννηση:</strong> ${clean(person.birth)}`;
-    document.getElementById('data2').innerHTML = `<strong>Θάνατος:</strong> ${clean(person.death)}`;
-    document.getElementById('data3').innerHTML = `<strong>Καταγωγή:</strong> ${clean(person.origin)}`;
-    document.getElementById('data4').innerHTML = `<strong>Κατηγορία:</strong> ${clean(person.cat)}`;
-    document.getElementById('data5').innerHTML = `<strong>Εποχή:</strong> ${clean(person.era)}`;
-    document.getElementById('data6').innerHTML = `<strong>Σχολή:</strong> ${clean(person.school)}`;
-    document.getElementById('data7').innerHTML = `<strong>Κατάταξη:</strong> ${clean(person.rank)}`;
-    document.getElementById('data8').innerHTML = `<strong>Σύντομο Βιογραφικό:</strong> ${clean(person.bio)}`;
-    document.getElementById('data9').innerHTML = `<strong>Συνεισφορά:</strong> ${clean(person.contr)}`;
-    document.getElementById('data10').innerHTML = `<strong>Έργα:</strong> ${clean(person.works)}`;
-    document.getElementById('data11').innerHTML = `<strong>Σχέση:</strong> ${clean(person.rel)}`;
-    document.getElementById('data12').innerHTML = `<strong>Σχετικό Πρόσωπο:</strong> ${clean(person.personB)}`;
-    document.getElementById('data13').innerHTML = `<strong>Ρήση:</strong> ${clean(person.quote)}`;
-
+    // 3. Κλήση AI
     askAI(person.name);
 }
 
-// 4. Η ΣΥΝΑΡΤΗΣΗ ΤΟΥ WORKER
+// 5. ΕΠΙΚΟΙΝΩΝΙΑ ΜΕ ΤΟΝ CLOUDFLARE WORKER
 async function askAI(name) {
     const aiBox = document.getElementById('aiResult');
-    aiBox.innerHTML = "<em>Η AI επεξεργάζεται...</em>";
+    aiBox.innerHTML = `<div style="color: gray;"><em>Η AI αναζητά πληροφορίες για τον ${name}...</em></div>`;
 
     try {
         const response = await fetch('https://person-lookup-api.gtetsi.workers.dev/', {
             method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: name })
         });
+        
         const data = await response.json();
-        aiBox.innerText = data.text;
+        
+        if (data && data.text) {
+            aiBox.innerText = data.text;
+        } else {
+            aiBox.innerText = "Δεν βρέθηκαν αποτελέσματα από την AI.";
+        }
     } catch (err) {
-        aiBox.innerText = "Η AI είναι προσωρινά μη διαθέσιμη (Quota Limit).";
+        console.error("AI Error:", err);
+        aiBox.innerText = "Η AI είναι προσωρινά μη διαθέσιμη. Ελέγξτε το Quota ή το API Key.";
     }
 }
 
+// 6. ΕΝΑΛΛΑΓΗ ΘΕΜΑΤΟΣ (DARK/LIGHT)
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
 }
