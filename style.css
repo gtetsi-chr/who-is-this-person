@@ -132,11 +132,13 @@ body.light-mode {
 
 /* 4. ΚΕΝΤΡΙΚΟ ΠΕΡΙΕΧΟΜΕΝΟ */
 .main-content {
-    padding: 30px;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    height: 100vh; /* Κρατάει όλο το δεξί μέρος στο ύψος της οθόνης */
+    padding: 20px;
     gap: 20px;
-    overflow-y: auto;
+    overflow: hidden; /* Απαγορεύει σε ΟΛΟ το main-content να κουνιέται */
 }
 
 .meta-box, .ai-box {
@@ -255,4 +257,45 @@ body.dark-force {
     animation: blink 1.5s infinite;
     padding: 20px;
     text-align: center;
+}
+
+
+/* Κοινά στυλ για τα δύο πλαίσια */
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Η ΠΡΩΤΗ ΚΑΡΤΑ (Βασικά Δεδομένα) */
+.main-content .card:first-of-type {
+    flex-shrink: 0; /* Δεν την αφήνει να μικρύνει */
+}
+
+/* Η ΔΕΥΤΕΡΗ ΚΑΡΤΑ (AI Βιογραφικό) */
+.main-content .card:last-of-type {
+    flex: 1; /* Παίρνει όλο τον υπόλοιπο χώρο */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Κλειδώνει την κάρτα */
+    margin-bottom: 20px; /* Απόσταση από το τέλος της οθόνης */
+}
+
+/* ΤΟ ΕΣΩΤΕΡΙΚΟ ΤΗΣ AI (Εκεί που μπαίνει το κείμενο) */
+#aiResult {
+    flex: 1;
+    overflow-y: auto; /* ΕΔΩ ΜΠΑΙΝΕΙ Η ΜΠΑΡΑ ΚΥΛΙΣΗΣ */
+    padding-right: 10px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+/* Ομορφιά στη μπάρα κύλισης της AI */
+#aiResult::-webkit-scrollbar {
+    width: 6px;
+}
+#aiResult::-webkit-scrollbar-thumb {
+    background: #4facfe;
+    border-radius: 10px;
 }
