@@ -147,14 +147,41 @@ body.light-mode {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
+/* Το πλαίσιο των 13 πεδίων */
 .meta-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
-    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 25px;
 }
 
-.meta-grid p { margin: 0; font-size: 0.9em; }
+/* Κάθε μεμονωμένο πεδίο */
+.meta-grid p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #bbb;
+    display: flex;
+    flex-direction: column; /* Τίτλος πάνω, Δεδομένο κάτω */
+}
+
+/* Οι τίτλοι (π.χ. Γέννηση, Έργα) */
+.meta-grid p strong {
+    color: #4facfe; /* Γαλάζιο χρώμα για τους τίτλους */
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+/* Τα δεδομένα από το Excel */
+.meta-grid p span {
+    color: #fff;
+    font-weight: 500;
+}
 
 #aiResult {
     line-height: 1.7;
@@ -189,9 +216,16 @@ body.dark-force {
     font-weight: bold;
 }
 
-@keyframes blink { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
+@keyframes blink { 
+    0% { opacity: 0.3; } 
+    50% { opacity: 1; } 
+    100% { opacity: 0.3; } 
+}
+
 .loading-ai {
     font-style: italic;
     color: #888;
     animation: blink 1.5s infinite;
+    padding: 20px;
+    text-align: center;
 }
