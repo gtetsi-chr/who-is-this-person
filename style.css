@@ -184,8 +184,35 @@ body.light-mode {
 }
 
 #aiResult {
+    /* 1. Περιορισμός ύψους για να μη φεύγει από την οθόνη */
+    max-height: 55vh; 
+    
+    /* 2. Εσωτερική μπάρα κύλισης */
+    overflow-y: auto; 
+    
+    /* 3. Απόσταση από το κάτω μέρος της οθόνης */
+    margin-bottom: 30px; 
+    
+    /* 4. Εμφάνιση (Padding και Στυλ) */
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    border-left: 4px solid #4facfe;
+    
+    /* 5. Κείμενο */
     line-height: 1.7;
+    font-size: 1.05rem;
+    color: #f0f0f0;
     white-space: pre-line; /* Για να κρατάει τις παραγράφους της AI */
+}
+
+/* Προαιρετικό: Ομορφιά στη μπάρα κύλισης του AI Result */
+#aiResult::-webkit-scrollbar {
+    width: 6px;
+}
+#aiResult::-webkit-scrollbar-thumb {
+    background-color: #4facfe;
+    border-radius: 10px;
 }
 
 /* Για χειροκίνητη αλλαγή αν ο χρήστης πατήσει το κουμπί */
