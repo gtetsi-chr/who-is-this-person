@@ -84,6 +84,29 @@ async function askAI(name) {
     }
 }
 
+function showTab(tabName) {
+    // Απόκρυψη όλων των περιεχομένων
+    document.getElementById('ai-content').style.display = 'none';
+    document.getElementById('wiki-content').style.display = 'none';
+    
+    // Αφαίρεση active class από τα κουμπιά
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    
+    // Εμφάνιση του επιλεγμένου
+    document.getElementById(tabName + '-content').style.display = 'block';
+    event.currentTarget.classList.add('active');
+}
+
+// Μέσα στη συνάρτηση selectPerson(element, person), πρόσθεσε αυτή τη γραμμή στο τέλος:
+function selectPerson(element, person) {
+    // ... ο παλιός σου κώδικας ...
+    
+    // Ενημέρωση Wikipedia Iframe
+    const wikiUrl = `https://el.m.wikipedia.org/wiki/${person.name.replace(/ /g, '_')}`;
+    document.getElementById('wikiFrame').src = wikiUrl;
+}
+
+
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
 }
