@@ -3,15 +3,16 @@ let database = [];
 window.onload = async () => {
     try {
         const response = await fetch('data.csv');
-        const data = await response.text();
+        const text = await response.text();
         
-        // Χωρίζουμε τις γραμμές
-        const rows = data.split('\n').filter(row => row.trim() !== ''); 
+        // ΑΥΤΟΜΑΤΟΣ ΕΝΤΟΠΙΣΜΟΣ ΔΙΑΧΩΡΙΣΤΙΚΟΥ (; ή ,)
+        const delimiter = text.includes(';') ? ';' : ',';
+        console.log("Detected delimiter:", delimiter);
+
+        const rows = text.split('\n').filter(row => row.trim() !== '');
         
-        // Παίρνουμε τα δεδομένα μετά την κεφαλίδα (ξεκινάμε από το 1)
         database = rows.slice(1).map(row => {
-            // ΕΔΩ ΕΙΝΑΙ Η ΑΛΛΑΓΗ: Χρησιμοποιούμε το ερωτηματικό ;
-            const cols = row.split(';'); 
+            const cols = row.split(delimiter); // Χρησιμοποιεί αυτό που βρήκε
             
             return {
                 id: cols[0]?.trim(),
@@ -30,11 +31,11 @@ window.onload = async () => {
                 personB: cols[13]?.trim(),
                 quote: cols[14]?.trim()
             };
-        }).filter(item => item.name); // Κρατάμε μόνο όσα έχουν όνομα
+        }).filter(item => item.name);
 
         renderTimeline();
     } catch (err) {
-        console.error("Σφάλμα φόρτωσης CSV:", err);
+        console.error("Σφάλμα φόρτωσης:", err);
     }
 };
 
