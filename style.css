@@ -1,0 +1,124 @@
+/* 1. ΜΕΤΑΒΛΗΤΕΣ ΧΡΩΜΑΤΩΝ (Για εύκολη αλλαγή) */
+:root {
+    --bg-color: #ffffff;
+    --sidebar-bg: #f8f9fa;
+    --text-color: #333333;
+    --border-color: #dddddd;
+    --accent-color: #007bff;
+    --box-bg: #ffffff;
+    --timeline-line: #e0e0e0;
+}
+
+/* ΣΚΟΥΡΟΧΡΩΜΗ ΕΜΦΑΝΙΣΗ (Dark Mode) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #121212;
+        --sidebar-bg: #1e1e1e;
+        --text-color: #e0e0e0;
+        --border-color: #333333;
+        --accent-color: #3792ff;
+        --box-bg: #1e1e1e;
+        --timeline-line: #444444;
+    }
+}
+
+/* 2. ΓΕΝΙΚΟ ΣΤΥΛ */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+    transition: background 0.3s, color 0.3s;
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    height: 100vh;
+}
+
+/* 3. TIMELINE (Αριστερά) */
+.sidebar {
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline {
+    position: relative;
+    overflow-y: auto;
+    padding: 20px 0;
+    flex-grow: 1;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--timeline-line);
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 50px;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg-color);
+    border: 3px solid var(--accent-color);
+    z-index: 1;
+}
+
+.timeline-item.active::before {
+    background: var(--accent-color);
+}
+
+.timeline-item .year { font-size: 0.8em; color: gray; }
+.timeline-item .name { font-weight: 500; }
+
+/* 4. ΚΕΝΤΡΙΚΟ ΠΕΡΙΕΧΟΜΕΝΟ */
+.main-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.meta-box, .ai-box {
+    background: var(--box-bg);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.meta-grid p { margin: 0; font-size: 0.9em; }
+
+#aiResult {
+    line-height: 1.7;
+    white-space: pre-line; /* Για να κρατάει τις παραγράφους της AI */
+}
