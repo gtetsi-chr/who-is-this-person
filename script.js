@@ -110,3 +110,29 @@ function selectPerson(element, person) {
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
 }
+
+async function fetchWikipedia(name) {
+    const wikiBody = document.getElementById('wiki-body');
+    wikiBody.innerHTML = "Αναζήτηση στην Wikipedia...";
+
+    try {
+        // Χρησιμοποιούμε το API της Wikipedia για να πάρουμε το "Parse" (επεξεργασμένο) περιεχόμενο
+        const url = `https://el.wikipedia.org/w/api.php?action=parse&page=${encodeURIComponent(name)}&format=json&origin=*&prop=text&section=0`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.parse && data.parse.text) {
+            let cleanHtml = data.parse.text["*"];
+            
+            // Διορθώνουμε τα links για να ανοίγουν σε νέο παράθυρο και να δείχνουν στην κανονική Wiki
+            cleanHtml = cleanHtml.replace(/href="\/wiki\//g, 'target="_blank" href="https://el.wikipedia.org/wiki/');
+            
+            wikiBody.innerHTML = cleanHtml;
+        } else {
+            wikiBody.innerHTML = "Δεν βρέθηκε λήμμα στην Wikipedia για αυτό το όνομα.";
+        }
+    } catch (err) {
+        wikiBody.innerHTML = "Σφάλμα κατά τη σύνδεση με την Wikipedia.";
+    }
+}
