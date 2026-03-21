@@ -33,6 +33,17 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 
+/* Για χειροκίνητη αλλαγή αν ο χρήστης πατήσει το κουμπί */
+body.dark-force {
+    --bg-color: #121212;
+    --sidebar-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --border-color: #333333;
+    --accent-color: #3792ff;
+    --box-bg: #1e1e1e;
+    --timeline-line: #444444;
+}
+
 .app-container {
     display: grid;
     grid-template-columns: 280px 1fr;
