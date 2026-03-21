@@ -100,14 +100,23 @@ function showTab(tabName) {
 }
 
 
-
-
 function toggleTheme() {
-    document.body.classList.toggle('light-mode');
-    // Προαιρετικά: Αποθήκευση της προτίμησης στο browser
-    const isLight = document.body.classList.contains('light-mode');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    const body = document.body;
+    body.classList.toggle('light-mode');
+    
+    // Αποθήκευση της επιλογής
+    const currentTheme = body.classList.contains('light-mode') ? 'light' : 'dark';
+    localStorage.setItem('theme', currentTheme);
 }
+
+// ΑΥΤΟ ΕΙΝΑΙ ΤΟ ΣΗΜΑΝΤΙΚΟ: Εκτελείται μόλις φορτώσει η σελίδα
+window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    }
+});
+
 
 async function fetchWikipedia(name) {
     const wikiBody = document.getElementById('wiki-body');
