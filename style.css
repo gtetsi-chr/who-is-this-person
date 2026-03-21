@@ -310,3 +310,38 @@ body.dark-force {
     background: #4facfe;
     border-radius: 10px;
 }
+
+/* Στυλ για τα Tabs */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    background: #4facfe;
+}
+
+/* Το περιεχόμενο των Tabs */
+.tab-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Το Iframe της Wikipedia */
+#wikiFrame {
+    border-radius: 8px;
+    background: white; /* Η Wikipedia είναι λευκή, οπότε βοηθάει στην αντίθεση */
+}
