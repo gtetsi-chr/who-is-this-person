@@ -132,11 +132,14 @@ body.light-mode {
 
 /* 4. ΚΕΝΤΡΙΚΟ ΠΕΡΙΕΧΟΜΕΝΟ */
 .main-content {
+    flex: 1;
+    height: 100vh;
     padding: 30px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     overflow-y: auto;
+    overflow: hidden; /* Απαγορεύει τη γενική μπάρα κύλισης */
 }
 
 .meta-box, .ai-box {
@@ -222,10 +225,31 @@ body.dark-force {
     100% { opacity: 0.3; } 
 }
 
+#aiResult {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.8; /* Μεγαλύτερη απόσταση στις γραμμές για ξεκούραστο διάβασμα */
+    color: #e0e0e0;
+    font-size: 1.05rem;
+    white-space: pre-wrap; /* Διατηρεί τις αλλαγές γραμμής της AI */
+}
+
+/* Στυλ για το Loading εφέ */
 .loading-ai {
-    font-style: italic;
-    color: #888;
-    animation: blink 1.5s infinite;
-    padding: 20px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    color: #4facfe;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Το πλαίσιο της AI */
+.ai-section {
+    flex: 1; /* Παίρνει όλο τον υπόλοιπο διαθέσιμο χώρο */
+    overflow-y: auto; /* Μπάρα κύλισης ΜΟΝΟ εδώ μέσα */
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 25px;
+    border-left: 4px solid #4facfe; /* Μια ωραία κάθετη γραμμή αριστερά */
 }
