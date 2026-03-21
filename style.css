@@ -79,6 +79,18 @@ body.light-mode {
     overflow-y: auto; /* Μόνο η λίστα μέσα του σκρολάρει */
     max-height: calc(100vh - 120px); /* Ρύθμισέ το ανάλογα με το ύψος του τίτλου σου */
     padding-right: 10px;
+
+/* 1. Για Chrome, Safari και Edge (Webkit) */
+    /* Εξαφανίζει την μπάρα τελείως */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 2. Για Firefox */
+    scrollbar-width: none;
+
+    /* 3. Για Internet Explorer / Edge (παλιό) */
+    -ms-overflow-style: none;
 }
 
 .timeline::before {
