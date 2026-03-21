@@ -435,9 +435,9 @@ body.dark-force {
 .theme-btn {
     position: fixed;
     top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
+    right: 25px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
