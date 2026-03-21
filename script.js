@@ -108,8 +108,8 @@ async function selectPerson(element, person) {
 // 5. ΕΠΙΚΟΙΝΩΝΙΑ ΜΕ ΤΟΝ CLOUDFLARE WORKER
 async function askAI(name) {
     const aiBox = document.getElementById('aiResult');
-    aiBox.innerHTML = `<div style="color: gray;"><em>Η AI αναζητά πληροφορίες για τον ${name}...</em></div>`;
-
+    aiBox.innerHTML = `<div class="loading-ai">Η AI αναζητά πληροφορίες για τον ${name}...</div>`;
+    
     try {
         const response = await fetch('https://person-lookup-api.gtetsi.workers.dev/', {
             method: 'POST',
