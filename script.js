@@ -104,6 +104,9 @@ function showTab(tabName) {
 
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
+    // Προαιρετικά: Αποθήκευση της προτίμησης στο browser
+    const isLight = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
 }
 
 async function fetchWikipedia(name) {
