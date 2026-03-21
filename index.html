@@ -6,6 +6,131 @@
     <title>Χρονολόγιο Προσωπικοτήτων</title>
     
     <style>
+
+/* Μηδενίζουμε περιθώρια για να πιάνει όλη την οθόνη */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    height: 100vh; /* Ύψος όλη την οθόνη */
+    overflow: hidden; /* Δεν θέλουμε όλη η σελίδα να σκρολάρει, μόνο τα πλαίσια */
+}
+
+/* 1. ΤΟ ΚΥΡΙΟ CONTAINER (GRID) */
+.app-container {
+    display: grid;
+    grid-template-columns: 280px 1fr; /* Αριστερή στήλη 280px, δεξιά το υπόλοιπο (1fr) */
+    height: 100vh;
+}
+
+/* Η στήλη αριστερά */
+.sidebar {
+    background-color: white;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.sidebar h2 { text-align: center; color: #333; }
+
+/* 2. Η ΚΑΘΕΤΗ ΓΡΑΜΜΗ ΤΟΥ TIMELINE */
+.timeline {
+    position: relative;
+    padding: 10px 0;
+    overflow-y: auto; /* Σκρολάρει μόνο η λίστα */
+    flex-grow: 1;
+}
+
+/* Η γκρίζα γραμμή */
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e0e0e0;
+}
+
+/* Το κάθε στοιχείο στη λίστα */
+.timeline-item {
+    position: relative;
+    padding-left: 50px;
+    margin-bottom: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Η τελεία πάνω στη γραμμή */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #007bff; /* Μπλε τελεία */
+    z-index: 1;
+}
+
+/* Εφέ όταν περνάς το ποντίκι */
+.timeline-item:hover { transform: translateX(5px); }
+.timeline-item:hover .name { color: #007bff; }
+
+/* Όταν ένα στοιχείο είναι επιλεγμένο */
+.timeline-item.active .name { font-weight: bold; color: #007bff; }
+.timeline-item.active::before { background: #007bff; } /* Γεμάτη μπλε τελεία */
+
+/* Το έτος και το όνομα */
+.timeline-item .year { display: block; font-size: 0.85em; color: #888; }
+.timeline-item .name { display: block; font-size: 1.1em; color: #333; }
+
+/* 3. Η ΔΕΞΙΑ ΣΤΗΛΗ (main-content) */
+.main-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column; /* Στοιβάζει τα πλαίσια κάθετα */
+    gap: 20px; /* Απόσταση μεταξύ των πλαισίων */
+    overflow-y: auto; /* Σκρολάρει αν δεν χωράνε τα πλαίσια */
+}
+
+/* Στυλ για τα πλαίσια (cards) */
+.meta-box, .ai-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.meta-box h3, .ai-box h3 { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; color: #333; }
+
+/* 4. ΤΟ ΠΛΕΓΜΑ ΓΙΑ ΤΑ 13 ΚΕΙΜΕΝΑ (META GRID) */
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 ίσες στήλες */
+    gap: 15px;
+}
+
+.meta-grid p { margin: 0; font-size: 0.95em; color: #555; }
+.meta-grid strong { color: #333; }
+
+/* 5. ΤΟ ΠΛΑΙΣΙΟ ΤΗΣ AI */
+#aiResult {
+    font-size: 1.05em;
+    line-height: 1.6;
+    color: #444;
+    min-height: 150px;
+    font-style: italic; /* Εφέ για να ξεχωρίζει η AI */
+}
+
+        
+
+
+        
     </style>
 </head>
 <body>
