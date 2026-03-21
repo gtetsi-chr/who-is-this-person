@@ -1,81 +1,231 @@
-/* Βασικά στυλ */
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #1a1a1a;
-    color: white;
-    margin: 0;
-    display: flex;
-    height: 100vh; /* Κρατάει το body στο ύψος της οθόνης */
+/* 1. ΜΕΤΑΒΛΗΤΕΣ ΧΡΩΜΑΤΩΝ - ΤΩΡΑ ΤΟ DARK ΕΙΝΑΙ ΤΟ ΠΡΟΚΑΘΟΡΙΣΜΕΝΟ */
+:root {
+    --bg-color: #121212;
+    --sidebar-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --border-color: #333333;
+    --accent-color: #3792ff;
+    --box-bg: #1e1e1e;
+    --timeline-line: #444444;
 }
 
-/* Αριστερή Στήλη */
+/* ΣΚΟΥΡΟΧΡΩΜΗ ΕΜΦΑΝΙΣΗ (Dark Mode) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #121212;
+        --sidebar-bg: #1e1e1e;
+        --text-color: #e0e0e0;
+        --border-color: #333333;
+        --accent-color: #3792ff;
+        --box-bg: #1e1e1e;
+        --timeline-line: #444444;
+    }
+}
+
+/* 2. ΓΕΝΙΚΟ ΣΤΥΛ */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* ΑΥΤΟ ΕΔΩ ΕΙΝΑΙ ΓΙΑ ΤΟ ΚΟΥΜΠΙ: Αν η κλάση .dark-mode μπει στο body, άλλαξε τα χρώματα */
+body.dark-mode {
+    --bg-color: #121212;
+    --sidebar-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --border-color: #333333;
+    --accent-color: #3792ff;
+    --box-bg: #1e1e1e;
+    --timeline-line: #444444;
+}
+/* 2. ΑΝ Ο ΧΡΗΣΤΗΣ ΕΠΙΛΕΞΕΙ LIGHT MODE (μέσω της κλάσης .light-mode) */
+body.light-mode {
+    --bg-color: #ffffff;
+    --sidebar-bg: #f8f9fa;
+    --text-color: #333333;
+    --border-color: #dddddd;
+    --accent-color: #007bff;
+    --box-bg: #ffffff;
+    --timeline-line: #e0e0e0;
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    height: 100vh;
+}
+
+/* 3. TIMELINE (Αριστερά) */
 .sidebar {
-    width: 300px;
-    background-color: #252525;
-    border-right: 1px solid #333;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    overflow: hidden; /* Το sidebar μένει σταθερό */
 }
 
 .timeline {
-    flex: 1;
+    position: relative;
     overflow-y: auto;
-    padding: 10px;
-    /* Κρύψιμο scrollbar */
+    padding: 20px 0;
+    flex-grow: 1;
+    overflow-y: auto; /* Μόνο η λίστα μέσα του σκρολάρει */
+    max-height: calc(100vh - 120px); /* Ρύθμισέ το ανάλογα με το ύψος του τίτλου σου */
+    padding-right: 10px;
+
+/* 1. Για Chrome, Safari και Edge (Webkit) */
+    /* Εξαφανίζει την μπάρα τελείως */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 2. Για Firefox */
     scrollbar-width: none;
+
+    /* 3. Για Internet Explorer / Edge (παλιό) */
     -ms-overflow-style: none;
 }
-.timeline::-webkit-scrollbar { display: none; }
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--timeline-line);
+}
 
 .timeline-item {
-    padding: 15px;
-    border-bottom: 1px solid #333;
+    position: relative;
+    padding-left: 50px;
+    margin-bottom: 30px;
     cursor: pointer;
 }
-.timeline-item.active { background-color: #4facfe; }
 
-/* Δεξιά Στήλη */
-.main-content {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Εμποδίζει τη γενική μπάρα κύλισης */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg-color);
+    border: 3px solid var(--accent-color);
+    z-index: 1;
 }
 
-/* Το πλέγμα με τα 13 πεδία */
+.timeline-item.active::before {
+    background: var(--accent-color);
+}
+
+.timeline-item .year { font-size: 0.8em; color: gray; }
+.timeline-item .name { font-weight: 500; }
+
+/* 4. ΚΕΝΤΡΙΚΟ ΠΕΡΙΕΧΟΜΕΝΟ */
+.main-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.meta-box, .ai-box {
+    background: var(--box-bg);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Το πλαίσιο των 13 πεδίων */
 .meta-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
-    background: #252525;
-    padding: 15px;
-    border-radius: 8px;
-    flex-shrink: 0; /* Δεν αφήνει το grid να μικρύνει */
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 25px;
 }
 
-.meta-grid p { margin: 5px 0; font-size: 0.9rem; }
-.meta-grid strong { color: #4facfe; }
+/* Κάθε μεμονωμένο πεδίο */
+.meta-grid p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #bbb;
+    display: flex;
+    flex-direction: column; /* Τίτλος πάνω, Δεδομένο κάτω */
+}
 
-/* ΤΟ ΠΛΑΙΣΙΟ ΤΗΣ AI - ΕΔΩ ΕΙΝΑΙ Η ΛΥΣΗ */
-.ai-section {
-    flex: 1; /* Παίρνει όλο τον υπόλοιπο χώρο */
-    background: #222;
-    padding: 20px;
-    border-radius: 8px;
-    overflow-y: auto; /* ΜΟΝΟ ΕΔΩ ΕΠΙΤΡΕΠΕΤΑΙ ΤΟ SCROLL */
-    border: 1px solid #333;
+/* Οι τίτλοι (π.χ. Γέννηση, Έργα) */
+.meta-grid p strong {
+    color: #4facfe; /* Γαλάζιο χρώμα για τους τίτλους */
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+/* Τα δεδομένα από το Excel */
+.meta-grid p span {
+    color: #fff;
+    font-weight: 500;
 }
 
 #aiResult {
-    line-height: 1.6;
-    white-space: pre-wrap;
+    line-height: 1.7;
+    white-space: pre-line; /* Για να κρατάει τις παραγράφους της AI */
 }
 
-/* Εφέ Loading */
-.loading-ai {
-    color: #4facfe;
-    animation: blink 1s infinite;
+/* Για χειροκίνητη αλλαγή αν ο χρήστης πατήσει το κουμπί */
+body.dark-force {
+    --bg-color: #121212;
+    --sidebar-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --border-color: #333333;
+    --accent-color: #3792ff;
+    --box-bg: #1e1e1e;
+    --timeline-line: #444444;
 }
-@keyframes blink { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+
+/* ΔΙΟΡΘΩΣΗ ΓΙΑ ΤΟ ΚΥΚΛΑΚΙ: Όταν το item έχει την κλάση .active, το κυκλάκι γεμίζει */
+.timeline-item.active::before {
+    background-color: var(--accent-color) !important;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+}
+
+.timeline-item .name {
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+
+.timeline-item.active .name {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+@keyframes blink { 
+    0% { opacity: 0.3; } 
+    50% { opacity: 1; } 
+    100% { opacity: 0.3; } 
+}
+
+.loading-ai {
+    font-style: italic;
+    color: #888;
+    animation: blink 1.5s infinite;
+    padding: 20px;
+    text-align: center;
+}
