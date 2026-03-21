@@ -249,6 +249,7 @@ body.light-mode #wiki-content {
     font-weight: 500;
 }
 
+/* ΤΟ ΕΣΩΤΕΡΙΚΟ ΤΗΣ AI (Εκεί που μπαίνει το κείμενο) */
 #aiResult {
     /* 1. Περιορισμός ύψους για να μη φεύγει από την οθόνη */
     max-height: 55vh; 
@@ -261,16 +262,18 @@ body.light-mode #wiki-content {
     
     /* 4. Εμφάνιση (Padding και Στυλ) */
     padding: 10px;
-    background: rgba(0, 0, 0, 0.25);
     border-radius: 12px;
     border-left: 4px solid #4facfe;
     
     /* 5. Κείμενο */
     line-height: 1.7;
     font-size: 1.05rem;
-    color: #f0f0f0;
     white-space: pre-line; /* Για να κρατάει τις παραγράφους της AI */
+    
+    background-color: transparent !important; /* Διώχνει το γκρι */
+    color: var(--text-color) !important;      /* Επιβάλλει το χρώμα της μεταβλητής */
 }
+
 
 /* Προαιρετικό: Ομορφιά στη μπάρα κύλισης του AI Result */
 #aiResult::-webkit-scrollbar {
@@ -342,6 +345,9 @@ body.dark-force {
     flex: 1; /* Αυτή η κάρτα θα μεγαλώνει */
     overflow: hidden;
     margin-bottom: 20px;
+
+    background-color: var(--box-bg);
+    color: var(--text-color);
 }
 /* Η ΠΡΩΤΗ ΚΑΡΤΑ (Βασικά Δεδομένα) */
 .main-content .card:first-of-type {
@@ -355,15 +361,6 @@ body.dark-force {
     flex-direction: column;
     overflow: hidden; /* Κλειδώνει την κάρτα */
     margin-bottom: 10px; /* Απόσταση από το τέλος της οθόνης */
-}
-
-/* ΤΟ ΕΣΩΤΕΡΙΚΟ ΤΗΣ AI (Εκεί που μπαίνει το κείμενο) */
-#aiResult {
-    flex: 1;
-    overflow-y: auto; /* ΕΔΩ ΜΠΑΙΝΕΙ Η ΜΠΑΡΑ ΚΥΛΙΣΗΣ */
-    padding-right: 10px;
-    line-height: 1.7;
-    white-space: pre-wrap;
 }
 
 /* Ομορφιά στη μπάρα κύλισης της AI */
@@ -413,7 +410,7 @@ body.dark-force {
 #wiki-body {
     line-height: 1.6;
     font-size: 0.95rem;
-    color: #ddd;
+    color: var(--text-color) !important;
 }
 
 /* Στυλ για τις εικόνες και τους πίνακες που μπορεί να φέρει η Wiki */
