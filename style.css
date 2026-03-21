@@ -188,3 +188,10 @@ body.dark-force {
     color: var(--accent-color);
     font-weight: bold;
 }
+
+@keyframes blink { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
+.loading-ai {
+    font-style: italic;
+    color: #888;
+    animation: blink 1.5s infinite;
+}
