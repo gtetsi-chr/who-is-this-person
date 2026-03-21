@@ -431,3 +431,40 @@ body.dark-force {
 .mw-editsection, .ambox, .navbox {
     display: none !important;
 }
+
+.theme-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 1000;
+    background: var(--sidebar-bg);
+}
+
+/* Εφέ Hover */
+.theme-btn:hover {
+    transform: scale(1.1) rotate(15deg);
+}
+
+/* Διαχείριση εικονιδίων */
+.theme-btn .icon-sun { display: none; }
+.theme-btn .icon-moon { display: block; }
+
+/* Όταν είμαστε σε Light Mode */
+body.light-mode .theme-btn {
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+body.light-mode .theme-btn .icon-sun { display: block; }
+body.light-mode .theme-btn .icon-moon { display: none; }
