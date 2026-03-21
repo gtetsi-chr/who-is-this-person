@@ -2,47 +2,71 @@
 <html lang="el">
 <head>
     <meta charset="UTF-8">
-    <title>AI Πληροφορίες</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Χρονολόγιο Προσωπικοτήτων</title>
+    
     <style>
-        body { font-family: sans-serif; padding: 20px; text-align: center; background: #f4f4f4; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        select, button { padding: 10px; margin: 10px; width: 100%; border-radius: 5px; border: 1px solid #ccc; }
-        #result { margin-top: 20px; padding: 15px; border-top: 2px solid #eee; min-height: 50px; font-style: italic; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Επίλεξε Πρόσωπο</h2>
-    <select id="personList">
-        <option value="Σωκράτης">Σωκράτης</option>
-        <option value="Μέγας Αλέξανδρος">Μέγας Αλέξανδρος</option>
-        <option value="Νίκος Καζαντζάκης">Νίκος Καζαντζάκης</option>
-    </select>
-    <button onclick="askAI()">Ποιος είναι αυτός;</button>
+    <div class="app-container">
 
-    <div id="result">Η απάντηση θα εμφανιστεί εδώ...</div>
-</div>
+        <aside class="sidebar">
+            <h2>Χρονολόγιο</h2>
+            <div class="timeline">
+                <div class="timeline-item active" onclick="loadPerson('Σωκράτης')">
+                    <span class="year">469 π.Χ.</span>
+                    <span class="name">Σωκράτης</span>
+                </div>
+                <div class="timeline-item" onclick="loadPerson('Μέγας Αλέξανδρος')">
+                    <span class="year">356 π.Χ.</span>
+                    <span class="name">Μέγας Αλέξανδρος</span>
+                </div>
+                <div class="timeline-item" onclick="loadPerson('Ιούλιος Καίσαρας')">
+                    <span class="year">100 π.Χ.</span>
+                    <span class="name">Ιούλιος Καίσαρας</span>
+                </div>
+                </div>
+        </aside>
 
-<script>
-    async function askAI() {
-        const name = document.getElementById('personList').value;
-        const resultDiv = document.getElementById('result');
-        resultDiv.innerText = "Σκέφτομαι...";
+        <main class="main-content">
 
-        try {
-            const response = await fetch('https://person-lookup-api.gtetsi.workers.dev', { // <-- ΒΑΛΕ ΤΟ URL ΤΟΥ WORKER ΣΟΥ
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: name })
-            });
-            const data = await response.json();
-            resultDiv.innerText = data.text;
-        } catch (error) {
-            resultDiv.innerText = "Ωχ! Κάτι πήγε στραβά.";
+            <section class="meta-box" id="metaBox">
+                <h3>Βασικές Πληροφορίες: <span id="currentNameTitle">Επίλεξε Πρόσωπο</span></h3>
+                <div class="meta-grid">
+                    <p><strong>Δεδομένο 1:</strong> <span id="data1">-</span></p>
+                    <p><strong>Δεδομένο 2:</strong> <span id="data2">-</span></p>
+                    <p><strong>Δεδομένο 3:</strong> <span id="data3">-</span></p>
+                    <p><strong>Δεδομένο 4:</strong> <span id="data4">-</span></p>
+                    <p><strong>Δεδομένο 5:</strong> <span id="data5">-</span></p>
+                    <p><strong>Δεδομένο 6:</strong> <span id="data6">-</span></p>
+                    <p><strong>Δεδομένο 7:</strong> <span id="data7">-</span></p>
+                    <p><strong>Δεδομένο 8:</strong> <span id="data8">-</span></p>
+                    <p><strong>Δεδομένο 9:</strong> <span id="data9">-</span></p>
+                    <p><strong>Δεδομένο 10:</strong> <span id="data10">-</span></p>
+                    <p><strong>Δεδομένο 11:</strong> <span id="data11">-</span></p>
+                    <p><strong>Δεδομένο 12:</strong> <span id="data12">-</span></p>
+                    <p><strong>Δεδομένο 13:</strong> <span id="data13">-</span></p>
+                </div>
+            </section>
+
+            <section class="ai-box">
+                <h3>Αναλυτικό Βιογραφικό (AI)</h3>
+                <div id="aiResult">Η απάντηση της AI θα εμφανιστεί εδώ...</div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script>
+        // ΠΡΟΣΩΡΙΝΗ ΣΥΝΑΡΤΗΣΗ ΓΙΑ ΝΑ ΔΟΥΜΕ ΤΟ CSS
+        function loadPerson(name) {
+            document.getElementById('currentNameTitle').innerText = name;
+            document.getElementById('aiResult').innerText = "Σκέφτομαι για τον " + name + "... (Εδώ θα καλείται ο Worker στο Βήμα 3)";
         }
-    }
-</script>
+    </script>
 
 </body>
 </html>
