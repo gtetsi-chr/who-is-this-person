@@ -59,9 +59,6 @@ async function selectPerson(element, person) {
 
     askAI(person.name);
 
-    // Ενημέρωση Wikipedia Iframe
-    const wikiUrl = `https://el.m.wikipedia.org/wiki/${person.name.replace(/ /g, '_')}`;
-    document.getElementById('wikiFrame').src = wikiUrl;
     fetchWikipedia(person.name); // Τραβάει το κείμενο από τη Wiki
 }
 
