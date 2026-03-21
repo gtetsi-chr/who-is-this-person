@@ -1,69 +1,73 @@
-let database = []; // Εδώ θα αποθηκευτούν τα δεδομένα από το CSV
+let database = [];
 
-// 1. ΦΟΡΤΩΣΗ ΤΟΥ CSV ΜΟΛΙΣ ΑΝΟΙΞΕΙ Η ΣΕΛΙΔΑ
 window.onload = async () => {
     try {
         const response = await fetch('data.csv');
-        const data = await response.text();
+        const buffer = await response.arrayBuffer();
+        const decoder = new TextDecoder('utf-8'); // Εδώ διορθώνουμε τα ελληνικά
+        const data = decoder.decode(buffer);
         
-        // Μετατροπή CSV σε Λίστα (Array)
-        const rows = data.split('\n').slice(1); // Παράκαμψη της πρώτης γραμμής (headers)
-        database = rows.map(row => {
-            const cols = row.split(','); // Ή ';' αν το Excel σου χρησιμοποιεί ερωτηματικό
+        // Χωρίζουμε τις γραμμές
+        const rows = data.split(/\r?\n/).filter(row => row.trim() !== "");
+        
+        // Παίρνουμε τα δεδομένα - Προσοχή: Χρησιμοποιούμε το ερωτηματικό (;) ως διαχωριστικό
+        database = rows.slice(1).map(row => {
+            const cols = row.split(';'); 
             return {
                 id: cols[0], name: cols[1], birth: cols[2], death: cols[3],
-                origin: cols[4], category: cols[5], era: cols[6], school: cols[7],
-                rank: cols[8], bio: cols[9], contribution: cols[10], works: cols[11],
-                relType: cols[12], personB: cols[13], quote: cols[14]
+                origin: cols[4], cat: cols[5], era: cols[6], school: cols[7],
+                rank: cols[8], bio: cols[9], contr: cols[10], works: cols[11],
+                rel: cols[12], personB: cols[13], quote: cols[14]
             };
-        }).filter(item => item.name); // Φιλτράρισμα κενών γραμμών
+        });
 
         renderTimeline();
     } catch (err) {
-        console.error("Σφάλμα φόρτωσης CSV:", err);
+        console.error("Σφάλμα:", err);
     }
 };
 
-// 2. ΔΗΜΙΟΥΡΓΙΑ ΤΟΥ TIMELINE ΑΡΙΣΤΕΡΑ
 function renderTimeline() {
     const timeline = document.querySelector('.timeline');
-    timeline.innerHTML = ''; // Καθαρισμός
+    timeline.innerHTML = '';
 
     database.forEach(person => {
+        if (!person.name) return;
         const item = document.createElement('div');
         item.className = 'timeline-item';
         item.onclick = () => selectPerson(item, person);
         item.innerHTML = `
             <span class="year">${person.birth || ''}</span>
-            <span class="name">${person.name}</span>
+            <span class="name">${person.name.replace(/"/g, '')}</span>
         `;
         timeline.appendChild(item);
     });
 }
 
-// 3. ΟΤΑΝ ΕΠΙΛΕΓΕΙΣ ΠΡΟΣΩΠΟ
 async function selectPerson(element, person) {
-    // Highlight
     document.querySelectorAll('.timeline-item').forEach(i => i.classList.remove('active'));
     element.classList.add('active');
 
-    // ΑΚΑΡΙΑΙΑ ΕΝΗΜΕΡΩΣΗ ΑΠΟ ΤΟ CSV (Τα 13+ πεδία σου)
-    document.getElementById('currentNameTitle').innerText = person.name;
-    document.getElementById('data1').innerText = person.birth || '-';
-    document.getElementById('data2').innerText = person.death || '-';
-    document.getElementById('data3').innerText = person.origin || '-';
-    document.getElementById('data4').innerText = person.category || '-';
-    document.getElementById('data5').innerText = person.era || '-';
-    document.getElementById('data6').innerText = person.school || '-';
-    document.getElementById('data7').innerText = person.rank || '-';
-    document.getElementById('data8').innerText = person.bio || '-';
-    document.getElementById('data9').innerText = person.contribution || '-';
-    document.getElementById('data10').innerText = person.works || '-';
-    document.getElementById('data11').innerText = person.relType || '-';
-    document.getElementById('data12').innerText = person.personB || '-';
-    document.getElementById('data13').innerText = person.quote || '-';
+    // Καθαρισμός των " από τα κείμενα αν υπάρχουν
+    const clean = (txt) => txt ? txt.replace(/"/g, '') : '-';
 
-    // ΚΛΗΣΗ AI (Θα εμφανιστεί αργότερα αν η Google ξεμπλοκάρει)
+    document.getElementById('currentNameTitle').innerText = clean(person.name);
+    
+    // Αντιστοίχιση των 15 πεδίων σου στα 13 πλαίσια
+    document.getElementById('data1').innerHTML = `<strong>Γέννηση:</strong> ${clean(person.birth)}`;
+    document.getElementById('data2').innerHTML = `<strong>Θάνατος:</strong> ${clean(person.death)}`;
+    document.getElementById('data3').innerHTML = `<strong>Καταγωγή:</strong> ${clean(person.origin)}`;
+    document.getElementById('data4').innerHTML = `<strong>Κατηγορία:</strong> ${clean(person.cat)}`;
+    document.getElementById('data5').innerHTML = `<strong>Εποχή:</strong> ${clean(person.era)}`;
+    document.getElementById('data6').innerHTML = `<strong>Σχολή:</strong> ${clean(person.school)}`;
+    document.getElementById('data7').innerHTML = `<strong>Κατάταξη:</strong> ${clean(person.rank)}`;
+    document.getElementById('data8').innerHTML = `<strong>Σύντομο Βιογραφικό:</strong> ${clean(person.bio)}`;
+    document.getElementById('data9').innerHTML = `<strong>Συνεισφορά:</strong> ${clean(person.contr)}`;
+    document.getElementById('data10').innerHTML = `<strong>Έργα:</strong> ${clean(person.works)}`;
+    document.getElementById('data11').innerHTML = `<strong>Σχέση:</strong> ${clean(person.rel)}`;
+    document.getElementById('data12').innerHTML = `<strong>Σχετικό Πρόσωπο:</strong> ${clean(person.personB)}`;
+    document.getElementById('data13').innerHTML = `<strong>Ρήση:</strong> ${clean(person.quote)}`;
+
     askAI(person.name);
 }
 
