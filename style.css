@@ -267,7 +267,18 @@ body.dark-force {
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
+/* Στυλ ΜΟΝΟ για την πάνω κάρτα (Πληροφορίες) */
+#info-card {
+    border-bottom: 3px solid #4facfe; /* Γαλάζια γραμμή μόνο πάνω */
+    background: rgba(79, 172, 254, 0.05); /* Ελαφρώς γαλάζιο φόντο */
+}
+/* Στυλ ΜΟΝΟ για την κάτω κάρτα (AI) */
+#ai-card {
+    border-left: 5px solid #ff9a9e; /* Άλλο χρώμα (π.χ. ροζ/κόκκινο) για να ξεχωρίζει */
+    flex: 1; /* Αυτή η κάρτα θα μεγαλώνει */
+    overflow: hidden;
+    margin-bottom: 20px;
+}
 /* Η ΠΡΩΤΗ ΚΑΡΤΑ (Βασικά Δεδομένα) */
 .main-content .card:first-of-type {
     flex-shrink: 0; /* Δεν την αφήνει να μικρύνει */
