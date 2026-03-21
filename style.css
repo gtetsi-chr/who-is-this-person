@@ -227,7 +227,7 @@ body.light-mode #wiki-content {
 /* Κάθε μεμονωμένο πεδίο */
 .meta-grid p {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #bbb;
     display: flex;
     flex-direction: column; /* Τίτλος πάνω, Δεδομένο κάτω */
@@ -245,7 +245,7 @@ body.light-mode #wiki-content {
 /* Τα δεδομένα από το Excel */
 .meta-grid p span {
     color: #fff;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 /* ΤΟ ΕΣΩΤΕΡΙΚΟ ΤΗΣ AI (Εκεί που μπαίνει το κείμενο) */
