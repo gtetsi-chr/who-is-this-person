@@ -222,7 +222,6 @@ body.light-mode #wiki-content {
     padding: 20px;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 25px;
 }
 
 /* Κάθε μεμονωμένο πεδίο */
@@ -330,7 +329,7 @@ body.dark-force {
 /* Κοινά στυλ για τα δύο πλαίσια */
 .card {
     background: rgba(255, 255, 255, 0.05);
-    padding: 20px;
+    padding: 10px;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -338,6 +337,8 @@ body.dark-force {
 #info-card {
     border-bottom: 3px solid #4facfe; /* Γαλάζια γραμμή μόνο πάνω */
     background: rgba(79, 172, 254, 0.05); /* Ελαφρώς γαλάζιο φόντο */
+    margin-top: 10px;
+    
 }
 /* Στυλ ΜΟΝΟ για την κάτω κάρτα (AI) */
 #ai-card {
