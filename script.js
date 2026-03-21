@@ -1,25 +1,22 @@
-// 1. ΛΕΙΤΟΥΡΓΙΑ ΓΙΑ ΤΗΝ ΕΝΑΛΛΑΓΗ ΘΕΜΑΤΟΣ (Dark/Light)
+// 1. ΛΕΙΤΟΥΡΓΙΑ ΓΙΑ ΤΗΝ ΕΝΑΛΛΑΓΗ ΘΕΜΑΤΟΣ
 function toggleTheme() {
-    // Εναλλάσσει την κλάση 'light-mode' στο body
     document.body.classList.toggle('light-mode');
-    console.log("Θέμα άλλαξε!");
 }
 
-// 2. Η ΚΥΡΙΑ ΛΕΙΤΟΥΡΓΙΑ: ΟΤΑΝ ΠΑΤΑΣ ΕΝΑ ΟΝΟΜΑ
+// 2. Η ΚΥΡΙΑ ΛΕΙΤΟΥΡΓΙΑ ΟΤΑΝ ΠΑΤΑΣ ΟΝΟΜΑ
 async function loadPerson(element, name) {
-    // Α) Διαχείριση Εμφάνισης (Highlight στο Timeline)
+    // Highlight στο Timeline
     const allItems = document.querySelectorAll('.timeline-item');
     allItems.forEach(item => item.classList.remove('active'));
     element.classList.add('active');
 
-    // Β) Ενημέρωση Τίτλου στο κέντρο
+    // Ενημέρωση Τίτλου
     document.getElementById('currentNameTitle').innerText = name;
     
-    // Γ) Καθαρισμός και εμφάνιση μηνύματος αναμονής στην AI
+    // Μήνυμα Αναμονής
     const aiBox = document.getElementById('aiResult');
-    aiBox.innerHTML = "<em>Περιμένετε, η AI επεξεργάζεται το αίτημα για τον " + name + "...</em>";
+    aiBox.innerHTML = `<div class="loading">Περιμένετε, η AI επεξεργάζεται το αίτημα για τον <strong>${name}</strong>...</div>`;
 
-    // Δ) Κλήση του Worker
     try {
         const workerUrl = 'https://person-lookup-api.gtetsi.workers.dev/'; 
         
@@ -29,13 +26,22 @@ async function loadPerson(element, name) {
             body: JSON.stringify({ name: name })
         });
 
+        if (!response.ok) {
+            throw new Error("Ο Worker επέστρεψε σφάλμα: " + response.status);
+        }
+
         const data = await response.json();
-        
-        // Εμφάνιση της απάντησης
-        aiBox.innerText = data.text;
+        console.log("Data received:", data); // Για να βλέπουμε τι έρχεται στην κονσόλα
+
+        // ΕΛΕΓΧΟΣ: Αν το data.text υπάρχει (όπως το στέλνει ο Worker μας)
+        if (data && data.text) {
+            aiBox.innerText = data.text;
+        } else {
+            aiBox.innerText = "Η AI επέστρεψε κενή απάντηση. Δοκιμάστε ξανά.";
+        }
 
     } catch (error) {
-        console.error("Error:", error);
-        aiBox.innerText = "Σφάλμα κατά τη σύνδεση με την AI.";
+        console.error("Detailed Error:", error);
+        aiBox.innerText = "Σφάλμα: " + error.message;
     }
 }
