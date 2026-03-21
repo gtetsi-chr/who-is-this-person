@@ -13,7 +13,10 @@
 
     <div class="app-container">
         <aside class="sidebar">
-            <button onclick="toggleTheme()">🌓 Αλλαγή Θέματος</button>
+            <button id="theme-toggle" class="theme-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+                <span class="icon-sun">☀️</span>
+                <span class="icon-moon">🌙</span>
+            </button>
             <h2>Χρονολόγιο</h2>
             <div class="timeline">
                 <div class="timeline-item" onclick="loadPerson(this, 'Σωκράτης')">
