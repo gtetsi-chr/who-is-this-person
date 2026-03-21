@@ -53,6 +53,70 @@ body.light-mode {
     --box-bg: #ffffff;
     --timeline-line: #e0e0e0;
 }
+/* LIGHT MODE ΔΙΟΡΘΩΣΕΙΣ */
+body.light-mode {
+    background-color: #f5f5f5; /* Ανοιχτό γκρι/λευκό φόντο */
+    color: #222; /* Σκούρα γράμματα παντού */
+}
+
+/* 1. Αλλαγή φόντου και γραμμάτων στα Tabs */
+body.light-mode .tab-btn {
+    background: #e0e0e0;
+    color: #333;
+}
+body.light-mode .tab-btn.active {
+    background: #4facfe;
+    color: white;
+}
+
+/* 2. Αλλαγή στο επάνω πλαίσιο (Info Card) */
+body.light-mode #info-card {
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+body.light-mode #info-card p span {
+    color: #333; /* Τα δεδομένα του Excel να γίνονται σκούρα */
+}
+
+/* 3. Αλλαγή στο κάτω πλαίσιο (AI & Wiki Card) */
+body.light-mode #ai-card {
+    background: white;
+    border: 1px solid #ddd;
+}
+
+/* 4. Το κείμενο της AI και της Wikipedia */
+body.light-mode #aiResult, 
+body.light-mode #wiki-body {
+    color: #222; /* Μαύρα γράμματα για να διαβάζονται */
+}
+
+/* 5. Το φόντο του κειμένου AI (αν είχαμε βάλει rgba) */
+body.light-mode #ai-content, 
+body.light-mode #wiki-content {
+    background: transparent;
+}
+
+/* Σύνδεση των πλαισίων με τις μεταβλητές σου */
+#info-card, #ai-card {
+    background-color: var(--box-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+#aiResult, #wiki-body {
+    color: var(--text-color);
+}
+
+.tab-btn {
+    background-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.tab-btn.active {
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
 
 .app-container {
     display: grid;
