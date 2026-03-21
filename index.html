@@ -2,213 +2,47 @@
 <html lang="el">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ποιος είναι αυτός ο άνθρωπος;</title>
+    <title>AI Πληροφορίες</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 600px;
-            width: 100%;
-        }
-
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-        }
-
-        .select-wrapper {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        select {
-            width: 100%;
-            padding: 15px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background: #f8f9fa;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-
-        select:hover, select:focus {
-            border-color: #667eea;
-            outline: none;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .result-box {
-            margin-top: 30px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            border-left: 5px solid #667eea;
-            min-height: 100px;
-            display: none;
-        }
-
-        .result-box.show {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-box h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 20px;
-        }
-
-        .result-box p {
-            color: #555;
-            line-height: 1.6;
-            font-size: 16px;
-        }
-
-        .loading {
-            text-align: center;
-            color: #667eea;
-            font-style: italic;
-        }
-
-        .error {
-            color: #e74c3c;
-            background: #fadbd8;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-        }
+        body { font-family: sans-serif; padding: 20px; text-align: center; background: #f4f4f4; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        select, button { padding: 10px; margin: 10px; width: 100%; border-radius: 5px; border: 1px solid #ccc; }
+        #result { margin-top: 20px; padding: 15px; border-top: 2px solid #eee; min-height: 50px; font-style: italic; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔍 Ποιος είναι αυτός ο άνθρωπος;</h1>
-        
-        <div class="select-wrapper">
-            <select id="personSelect">
-                <option value="">-- Επίλεξε άτομο --</option>
-                <option value="Αλμπέρτ Αϊνστάιν">Αλμπέρτ Αϊνστάιν</option>
-                <option value="Μαρία Κιουρί">Μαρία Κιουρί</option>
-                <option value="Νίκος Καζαντζάκης">Νίκος Καζαντζάκης</option>
-                <option value="Μαρίλυν Μονρόε">Μαρίλυν Μονρόε</option>
-                <option value="Σωκράτης">Σωκράτης</option>
-                <option value="Νίκος Γκάλης">Νίκος Γκάλης</option>
-                <option value="Φρίντα Κάλο">Φρίντα Κάλο</option>
-                <option value="Στιβ Τζομπς">Στιβ Τζομπς</option>
-            </select>
-        </div>
 
-        <button id="searchBtn" onclick="searchPerson()">Αναζήτηση</button>
+<div class="container">
+    <h2>Επίλεξε Πρόσωπο</h2>
+    <select id="personList">
+        <option value="Σωκράτης">Σωκράτης</option>
+        <option value="Μέγας Αλέξανδρος">Μέγας Αλέξανδρος</option>
+        <option value="Νίκος Καζαντζάκης">Νίκος Καζαντζάκης</option>
+    </select>
+    <button onclick="askAI()">Ποιος είναι αυτός;</button>
 
-        <div id="errorBox" class="error"></div>
+    <div id="result">Η απάντηση θα εμφανιστεί εδώ...</div>
+</div>
 
-        <div id="resultBox" class="result-box">
-            <h3 id="personName"></h3>
-            <p id="personInfo"></p>
-        </div>
-    </div>
+<script>
+    async function askAI() {
+        const name = document.getElementById('personList').value;
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerText = "Σκέφτομαι...";
 
-    <script>
-        // ΒΑΛΕ ΕΔΩ ΤΟ URL ΑΠΟ ΤΟΝ WORKER (π.χ. https://person-lookup-api.yourname.workers.dev)
-        const WORKER_URL = 'https://person-lookup-api.gtetsi.workers.dev';
-
-        async function searchPerson() {
-            const select = document.getElementById('personSelect');
-            const name = select.value;
-            const resultBox = document.getElementById('resultBox');
-            const errorBox = document.getElementById('errorBox');
-            const btn = document.getElementById('searchBtn');
-
-            if (!name) {
-                alert('Παρακαλώ επίλεξε ένα άτομο πρώτα!');
-                return;
-            }
-
-            // Reset
-            errorBox.style.display = 'none';
-            resultBox.classList.remove('show');
-            btn.disabled = true;
-            btn.textContent = 'Φόρτωση...';
-
-            try {
-                const response = await fetch(WORKER_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ personName: name })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Σφάλμα σύνδεσης');
-                }
-
-                const data = await response.json();
-                
-                document.getElementById('personName').textContent = name;
-                document.getElementById('personInfo').textContent = data.answer;
-                resultBox.classList.add('show');
-
-            } catch (error) {
-                errorBox.textContent = 'Υπήρξε ένα πρόβλημα: ' + error.message;
-                errorBox.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Αναζήτηση';
-            }
+        try {
+            const response = await fetch('https://person-lookup-api.gtetsi.workers.dev', { // <-- ΒΑΛΕ ΤΟ URL ΤΟΥ WORKER ΣΟΥ
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name })
+            });
+            const data = await response.json();
+            resultDiv.innerText = data.text;
+        } catch (error) {
+            resultDiv.innerText = "Ωχ! Κάτι πήγε στραβά.";
         }
+    }
+</script>
 
-        // Enter key support
-        document.getElementById('personSelect').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') searchPerson();
-        });
-    </script>
 </body>
 </html>
