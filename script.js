@@ -52,14 +52,30 @@ async function selectPerson(element, person) {
     element.classList.add('active');
 
     document.getElementById('currentNameTitle').innerText = person.name;
-    for(let i=1; i<=13; i++) {
-        const field = Object.values(person)[i+1]; 
-        document.getElementById('data' + i).innerText = field || '-';
-    }
 
+    // Αντιστοίχιση των IDs του HTML με τα κλειδιά του CSV
+    document.getElementById('data1').innerText = person.birth || '-';
+    document.getElementById('data2').innerText = person.death || '-';
+    document.getElementById('data3').innerText = person.origin || '-';
+    document.getElementById('data4').innerText = person.category || '-';
+    document.getElementById('data5').innerText = person.era || '-';
+    document.getElementById('data6').innerText = person.school || '-';
+    document.getElementById('data7').innerText = person.rank || '-';
+    document.getElementById('data8').innerText = person.bio || '-';
+    document.getElementById('data9').innerText = person.contribution || '-';
+    document.getElementById('data10').innerText = person.works || '-';
+    document.getElementById('data11').innerText = person.relType || '-';
+    document.getElementById('data12').innerText = person.personB || '-';
+    document.getElementById('data13').innerText = person.quote || '-';
+
+        //πρώτα το είχαμε έτσι αλλά εάν προσθέσεις στήλη στο .csv θα μπερδευτει με τα data
+    //for(let i=1; i<=13; i++) {
+    //    const field = Object.values(person)[i+1]; 
+    //    document.getElementById('data' + i).innerText = field || '-';
+    //}
+    
     askAI(person.name);
-
-    fetchWikipedia(person.name); // Τραβάει το κείμενο από τη Wiki
+    fetchWikipedia(person.name);// Τραβάει το κείμενο από τη Wiki
 }
 
 async function askAI(name) {
