@@ -159,3 +159,13 @@ async function fetchWikipedia(name) {
         wikiBody.innerHTML = "Σφάλμα κατά τη σύνδεση με την Wikipedia.";
     }
 }
+
+function filterTimeline() {
+    const query = document.getElementById('search-input').value.toLowerCase();
+    const items = document.querySelectorAll('.timeline-item');
+    
+    items.forEach(item => {
+        const name = item.querySelector('.name').innerText.toLowerCase();
+        item.style.display = name.includes(query) ? 'block' : 'none';
+    });
+}
