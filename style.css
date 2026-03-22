@@ -21,7 +21,16 @@
         --timeline-line: #444444;
     }
 }
-
+@media (max-width: 768px) {
+    .app-container {
+        grid-template-columns: 1fr; /* Η μπάρα και το περιεχόμενο το ένα κάτω από το άλλο */
+        height: auto;
+        overflow-y: auto;
+    }
+    .sidebar {
+        height: 300px; /* Περιορισμένο ύψος στο κινητό */
+    }
+}
 /* 2. ΓΕΝΙΚΟ ΣΤΥΛ */
 body {
     margin: 0;
