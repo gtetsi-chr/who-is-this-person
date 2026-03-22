@@ -423,6 +423,15 @@ body.dark-force {
     color: var(--text-color) !important;
 }
 
+/* Καθαρισμός του περιεχομένου της Wikipedia */
+#wiki-body .mw-parser-output {
+    background: transparent !important;
+    color: inherit !important;
+}
+
+#wiki-body table {
+    display: none; /* Κρύβει τους μεγάλους πίνακες δεξιά που χαλάνε το layout */
+}
 /* Στυλ για τις εικόνες και τους πίνακες που μπορεί να φέρει η Wiki */
 #wiki-body img {
     max-width: 100%;
