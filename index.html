@@ -13,11 +13,11 @@
 
     <div class="app-container">
         <aside class="sidebar">
-            <input type="text" id="search-input" placeholder="Αναζήτηση..." onkeyup="filterTimeline()">
             <button id="theme-toggle" class="theme-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
                 <span class="icon-sun">☀️</span>
                 <span class="icon-moon">🌙</span>
             </button>
+            <input type="text" id="search-input" placeholder="Αναζήτηση..." onkeyup="filterTimeline()">
             <h2>Χρονολόγιο</h2>
             <div class="timeline">
                 <div class="timeline-item" onclick="loadPerson(this, 'Σωκράτης')">
