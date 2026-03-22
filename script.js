@@ -139,7 +139,6 @@ async function fetchWikipedia(name) {
     wikiBody.innerHTML = "Αναζήτηση στην Wikipedia...";
 
     try {
-        // Χρησιμοποιούμε το API της Wikipedia για να πάρουμε το "Parse" (επεξεργασμένο) περιεχόμενο
         const url = `https://el.wikipedia.org/w/api.php?action=parse&page=${encodeURIComponent(name)}&format=json&origin=*&prop=text&section=0`;
         
         const response = await fetch(url);
@@ -148,12 +147,22 @@ async function fetchWikipedia(name) {
         if (data.parse && data.parse.text) {
             let cleanHtml = data.parse.text["*"];
             
-            // Διορθώνουμε τα links για να ανοίγουν σε νέο παράθυρο και να δείχνουν στην κανονική Wiki
+            // Διόρθωση των links
             cleanHtml = cleanHtml.replace(/href="\/wiki\//g, 'target="_blank" href="https://el.wikipedia.org/wiki/');
             
-            wikiBody.innerHTML = cleanHtml;
+            // Προσθήκη συνδέσμου για πλήρες άρθρο στο τέλος
+            const fullArticleLink = `
+                <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #444;">
+                    <a href="https://el.wikipedia.org/wiki/${encodeURIComponent(name)}" target="_blank" style="color: #4facfe; font-weight: bold; text-decoration: none;">
+                        Διαβάστε ολόκληρο το άρθρο στη Wikipedia →
+                    </a>
+                </div>`;
+            
+            wikiBody.innerHTML = cleanHtml + fullArticleLink;
         } else {
-            wikiBody.innerHTML = "Δεν βρέθηκε λήμμα στην Wikipedia για αυτό το όνομα.";
+            wikiBody.innerHTML = `<p>Δεν βρέθηκε ακριβές λήμμα για τον <b>${name}</b>.</p>
+                                  <a href="https://el.wikipedia.org/wiki/Special:Search/${encodeURIComponent(name)}" target="_blank" style="color: #4facfe;">
+                                  Αναζήτηση στη Wikipedia →</a>`;
         }
     } catch (err) {
         wikiBody.innerHTML = "Σφάλμα κατά τη σύνδεση με την Wikipedia.";
