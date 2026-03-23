@@ -212,6 +212,7 @@ body.light-mode #wiki-content {
     padding: 20px;
     gap: 20px;
     overflow: hidden; /* Απαγορεύει σε ΟΛΟ το main-content να κουνιέται */
+    box-sizing: border-box;
 }
 
 .meta-box, .ai-box {
@@ -342,22 +343,38 @@ body.dark-force {
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
-/* Στυλ ΜΟΝΟ για την πάνω κάρτα (Πληροφορίες) */
+/* 2. Στυλ για την Πάνω Κάρτα (Πληροφορίες - 40%) */
 #info-card {
-    border-bottom: 3px solid #4facfe; /* Γαλάζια γραμμή μόνο πάνω */
-    background: rgba(79, 172, 254, 0.05); /* Ελαφρώς γαλάζιο φόντο */
-    margin-top: 10px;
-    
+    height: 40%; /* Ορίζουμε το 40% του ύψους */
+    min-height: 40%; /* Διασφαλίζουμε ότι δεν θα μικρύνει */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Κλειδώνουμε την κάρτα */
+    border-bottom: 3px solid #4facfe;/* Γαλάζια γραμμή μόνο πάνω */
+    background: rgba(79, 172, 254, 0.05);/* Ελαφρώς γαλάζιο φόντο */
+    /* margin-top: 10px; */
 }
-/* Στυλ ΜΟΝΟ για την κάτω κάρτα (AI) */
-#ai-card {
-    border-left: 5px solid #ff9a9e; /* Άλλο χρώμα (π.χ. ροζ/κόκκινο) για να ξεχωρίζει */
-    flex: 1; /* Αυτή η κάρτα θα μεγαλώνει */
-    overflow: hidden;
-    margin-bottom: 20px;
+/* Επειδή τα 13 πεδία είναι πολλά, πρέπει το εσωτερικό grid να σκρολάρει */
+#info-card .meta-grid {
+    flex: 1;
+    overflow-y: auto; /* Αν τα πεδία δεν χωράνε στο 40%, βγάζει εσωτερική μπάρα */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
 
+/* 3. Στυλ για την Κάτω Κάρτα (AI - 60%) */
+#ai-card {
     background-color: var(--box-bg);
     color: var(--text-color);
+
+    height: 60%; /* Ορίζουμε το υπόλοιπο 60% */
+    min-height: 60%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 0; /* Αφαιρούμε το μεγάλο margin για να μη βγαίνει εκτός */
+    border-left: 5px solid #ff9a9e; /* Άλλο χρώμα (π.χ. ροζ/κόκκινο) για να ξεχωρίζει */
 }
 /* Η ΠΡΩΤΗ ΚΑΡΤΑ (Βασικά Δεδομένα) */
 .main-content .card:first-of-type {
@@ -410,7 +427,12 @@ body.dark-force {
     flex: 1;
     overflow-y: auto;
 }
-
+/* Το περιεχόμενο των Tabs (AI κείμενο ή Wikipedia) */
+#ai-card .tab-content {
+    flex: 1;
+    overflow-y: auto; /* Εδώ θα γίνεται το σκρολάρισμα του μεγάλου κειμένου */
+    padding-right: 10px;
+}
 /* Το Iframe της Wikipedia */
 #wikiFrame {
     border-radius: 8px;
