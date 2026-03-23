@@ -48,38 +48,62 @@ function renderTimeline() {
 }
 
 async function selectPerson(element, person) {
+    // 1. Διαχείριση του "Active" στοιχείου στο Timeline
     document.querySelectorAll('.timeline-item').forEach(i => i.classList.remove('active'));
     element.classList.add('active');
 
+    // 2. Ενημέρωση του Τίτλου
     document.getElementById('currentNameTitle').innerText = person.name;
 
-    // Αντιστοίχιση των IDs του HTML με τα κλειδιά του CSV
-    document.getElementById('data1').innerText = person.birth || '-';
-    document.getElementById('data2').innerText = person.death || '-';
-    document.getElementById('data3').innerText = person.origin || '-';
-    document.getElementById('data4').innerText = person.category || '-';
-    document.getElementById('data5').innerText = person.era || '-';
-    document.getElementById('data6').innerText = person.school || '-';
-    document.getElementById('data7').innerText = person.rank || '-';
-    document.getElementById('data8').innerText = person.bio || '-';
-    document.getElementById('data9').innerText = person.contribution || '-';
-    document.getElementById('data10').innerText = person.works || '-';
-    document.getElementById('data11').innerText = person.relType || '-'; // π.χ. "Δάσκαλος" [cite: 1, 8]
+    // 3. Γέμισμα των υπόλοιπων πεδίων (εκτός του data12)
+    // Αντιστοιχούμε τα κλειδιά του αντικειμένου person στα IDs data1...data13
+    const keys = ['birth', 'death', 'origin', 'category', 'era', 'school', 'rank', 'bio', 'contribution', 'works', 'relType', 'personB', 'quote'];
     
-    const relatedName = getPersonNameById(person.personB);
-    document.getElementById('data12').innerText = relatedName;    //document.getElementById('data12').innerText = person.personB || '-';
+    keys.forEach((key, index) => {
+        const fieldId = `data${index + 1}`;
+        const element = document.getElementById(fieldId);
+        
+        if (fieldId === 'data12') {
+            // --- ΕΔΩ ΜΠΑΙΝΕΙ ΤΟ BONUS ΓΙΑ ΤΟ ΚΛΙΚΑΡΙΣΜΑ ---
+            const relatedName = getPersonNameById(person.personB);
+            
+            if (relatedName !== "-" && relatedName !== person.personB) {
+                element.innerHTML = `<span class="link-to-person" style="color: #4facfe; cursor: pointer; text-decoration: underline; font-weight: bold;">${relatedName}</span>`;
+                element.onclick = () => {
+                    // Βρίσκουμε το αντικείμενο του σχετιζόμενου από τη database
+                    const relatedPerson = database.find(p => p.id.trim() === person.personB.trim());
+                    
+                    // Βρίσκουμε το αντίστοιχο στοιχείο στο Timeline για να το κάνουμε κλικ προγραμματιστικά
+                    const timelineItems = document.querySelectorAll('.timeline-item');
+                    let targetElement = null;
+                    timelineItems.forEach(item => {
+                        if (item.querySelector('.name').innerText === relatedName) {
+                            targetElement = item;
+                        }
+                    });
 
-    document.getElementById('data13').innerText = person.quote || '-'; // π.χ. "Γνώθι σαυτόν"
+                    if (relatedPerson && targetElement) {
+                        selectPerson(targetElement, relatedPerson);
+                        // Scroll για να φανεί το στοιχείο στο sidebar αν είναι μακριά
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                };
+            } else {
+                element.innerText = relatedName;
+                element.onclick = null;
+                element.style.cursor = "default";
+            }
+            // ----------------------------------------------
+        } else {
+            // Για όλα τα άλλα πεδία (data1-11 και 13)
+            element.innerText = person[key] || '-';
+            element.onclick = null; // Καθαρισμός αν υπήρχε προηγούμενο click event
+        }
+    });
 
-
-    //πρώτα το είχαμε έτσι αλλά εάν προσθέσεις στήλη στο .csv θα μπερδευτει με τα data
-    //for(let i=1; i<=13; i++) {
-    //    const field = Object.values(person)[i+1]; 
-    //    document.getElementById('data' + i).innerText = field || '-';
-    //}
-    
+    // 4. Ενημέρωση AI και Wikipedia
     askAI(person.name);
-    fetchWikipedia(person.name);// Τραβάει το κείμενο από τη Wiki
+    fetchWikipedia(person.name);
 }
 
 async function askAI(name) {
