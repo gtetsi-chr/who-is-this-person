@@ -103,7 +103,7 @@ async function selectPerson(element, person) {
 
     // 4. Ενημέρωση AI και Wikipedia
     askAI(person.name);
-    fetchWikipedia(person.name);
+    fetchWikipedia(person.name);// Τραβάει το κείμενο από τη Wiki
 }
 
 async function askAI(name) {
