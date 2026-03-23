@@ -64,11 +64,15 @@ async function selectPerson(element, person) {
     document.getElementById('data8').innerText = person.bio || '-';
     document.getElementById('data9').innerText = person.contribution || '-';
     document.getElementById('data10').innerText = person.works || '-';
-    document.getElementById('data11').innerText = person.relType || '-';
-    document.getElementById('data12').innerText = person.personB || '-';
-    document.getElementById('data13').innerText = person.quote || '-';
+    document.getElementById('data11').innerText = person.relType || '-'; // π.χ. "Δάσκαλος" [cite: 1, 8]
+    
+    const relatedName = getPersonNameById(person.personB);
+    document.getElementById('data12').innerText = relatedName;    //document.getElementById('data12').innerText = person.personB || '-';
 
-        //πρώτα το είχαμε έτσι αλλά εάν προσθέσεις στήλη στο .csv θα μπερδευτει με τα data
+    document.getElementById('data13').innerText = person.quote || '-'; // π.χ. "Γνώθι σαυτόν"
+
+
+    //πρώτα το είχαμε έτσι αλλά εάν προσθέσεις στήλη στο .csv θα μπερδευτει με τα data
     //for(let i=1; i<=13; i++) {
     //    const field = Object.values(person)[i+1]; 
     //    document.getElementById('data' + i).innerText = field || '-';
@@ -177,4 +181,13 @@ function filterTimeline() {
         const name = item.querySelector('.name').innerText.toLowerCase();
         item.style.display = name.includes(query) ? 'block' : 'none';
     });
+}
+function getPersonNameById(id) {
+    if (!id || id === "-") return "-"; // Αν δεν υπάρχει ID, επέστρεψε παύλα
+    
+    // Ψάχνουμε στη database για το αντικείμενο που έχει το ίδιο PersonID
+    const found = database.find(p => p.id.trim() === id.trim());
+    
+    // Αν το βρει, επέστρεψε το όνομα, αλλιώς επέστρεψε τον αριθμό
+    return found ? found.name : id;
 }
